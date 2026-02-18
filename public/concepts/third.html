@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talenopia — Utopia of Talent Sourcing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a;--white:#ffffff;--off-white:#f8f7f5;
+  --red:#c8102e;--red-dark:#a00d24;
+  --gray:#f2f1ef;--gray-mid:#dedbd6;--gray-text:#888580;
+  --text:#1a1917;--text-light:#65625e;
+  --nav-h:68px;--ease:cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden;cursor:none}
+/* CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(200,16,46,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 4%;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.07);transition:box-shadow .3s}
+nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,.07)}
+.logo{display:flex;align-items:center;gap:11px;cursor:pointer;text-decoration:none}
+.logo-icon{width:36px;height:36px;flex-shrink:0}
+.logo-icon svg{width:100%;height:100%}
+.logo-wordmark{display:flex;flex-direction:column;line-height:1.1}
+.logo-wordmark b{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.06em;color:var(--black)}
+.logo-wordmark small{font-size:.38rem;font-weight:600;letter-spacing:.28em;color:var(--red);text-transform:uppercase;margin-top:2px}
+.nav-links{display:flex;align-items:center;gap:30px;list-style:none}
+.nav-links a{font-size:.76rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--text);position:relative;padding-bottom:3px;transition:color .25s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--red);transition:width .3s var(--ease)}
+.nav-links a:hover,.nav-links a.active{color:var(--red)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-cta{background:var(--black)!important;color:var(--white)!important;padding:9px 20px!important;letter-spacing:.1em!important;transition:background .25s!important}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{background:var(--red)!important}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--black);transition:.3s}
+/* PAGES */
+.page{display:none;padding-top:var(--nav-h);min-height:100vh;animation:pageFade .4s var(--ease) forwards}
+.page.active{display:block}
+@keyframes pageFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s var(--ease)}
+.btn-red{background:var(--red);color:var(--white)}
+.btn-red:hover{background:var(--red-dark);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,16,46,.3)}
+.btn-black{background:var(--black);color:var(--white)}
+.btn-black:hover{background:var(--red);transform:translateY(-2px)}
+.btn-outline-w{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.3)}
+.btn-outline-w:hover{border-color:var(--white);background:rgba(255,255,255,.08);transform:translateY(-2px)}
+.btn-white{background:var(--white);color:var(--red)}
+.btn-white:hover{background:var(--off-white);transform:translateY(-2px)}
+.arr{display:inline-block;width:16px;height:1px;background:currentColor;position:relative;transition:width .2s}
+.arr::after{content:'';position:absolute;right:0;top:-3px;border:4px solid transparent;border-left:5px solid currentColor;border-right:none}
+.btn:hover .arr{width:22px}
+/* TYPOGRAPHY */
+.eyebrow{font-size:.63rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.eyebrow::before{content:'';display:block;width:26px;height:1.5px;background:var(--red);flex-shrink:0}
+.eyebrow.center{justify-content:center}
+.eyebrow.center::before{display:none}
+.section-h{font-family:'DM Serif Display',serif;font-size:clamp(1.7rem,3.2vw,2.6rem);line-height:1.15;color:var(--black);margin-bottom:18px}
+.section-h em{color:var(--red);font-style:italic}
+.section-h.wh{color:var(--white)}
+.body-text{font-size:.93rem;line-height:1.78;color:var(--text-light);max-width:580px}
+.body-text.wh{color:rgba(255,255,255,.55)}
+.rbar{width:38px;height:3px;background:var(--red);margin:14px 0 26px}
+.rbar.c{margin:14px auto 26px}
+.wrap{padding:88px 4%}
+.wrap-sm{padding:60px 4%}
+/* BENTO */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:10px;margin-top:56px}
+.b{border:1px solid var(--gray-mid);padding:34px 30px;position:relative;overflow:hidden;background:var(--white);transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s}
+.b::after{content:'';position:absolute;top:0;left:0;width:0;height:3px;background:var(--red);transition:width .4s var(--ease)}
+.b:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+.b:hover::after{width:100%}
+.b:hover .bico{transform:scale(1.1) rotate(-4deg)}
+.b-4{grid-column:span 4}.b-6{grid-column:span 6}.b-8{grid-column:span 8}
+.b-3{grid-column:span 3}.b-5{grid-column:span 5}.b-7{grid-column:span 7}
+.b-12{grid-column:span 12}.b-r2{grid-row:span 2}
+.b-dk{background:var(--black)!important;border-color:transparent}
+.b-rd{background:var(--red)!important;border-color:transparent}
+.b-gy{background:var(--gray)!important}
+.bico{width:46px;height:46px;margin-bottom:18px;display:flex;align-items:center;justify-content:center;background:var(--gray);font-size:1.3rem;transition:transform .3s;flex-shrink:0}
+.b-dk .bico{background:rgba(255,255,255,.06)}
+.b-rd .bico{background:rgba(255,255,255,.15)}
+.b h3{font-size:.97rem;font-weight:700;margin-bottom:9px;color:var(--black)}
+.b-dk h3{color:var(--white)}.b-rd h3{color:var(--white)}
+.b p{font-size:.83rem;color:var(--text-light);line-height:1.66}
+.b-dk p{color:rgba(255,255,255,.45)}.b-rd p{color:rgba(255,255,255,.75)}
+.bstat .snum{font-family:'Bebas Neue',sans-serif;font-size:3.8rem;line-height:1;margin-bottom:4px;color:var(--black)}
+.b-dk .snum{color:var(--white)}.b-rd .snum{color:var(--white)}
+.bstat .snum span{color:var(--red)}
+.b-rd .snum span{color:rgba(255,255,255,.45)}
+.bstat .slabel{font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gray-text)}
+.b-dk .slabel{color:rgba(255,255,255,.3)}.b-rd .slabel{color:rgba(255,255,255,.6)}
+.btag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;background:var(--red);color:var(--white);margin-bottom:12px}
+.b-dk .btag{background:rgba(200,16,46,.2);color:var(--red)}
+.b-rd .btag{background:rgba(255,255,255,.15);color:var(--white)}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.pill{font-size:.68rem;font-weight:600;letter-spacing:.04em;padding:5px 11px;background:var(--gray);border:1px solid var(--gray-mid);transition:all .2s}
+.pill:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+.b-dk .pill{background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.1)}
+.b-dk .pill:hover{background:var(--red);border-color:var(--red);color:var(--white)}
+.cklist{margin-top:10px}
+.cki{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--text-light);padding:7px 0;border-bottom:1px solid var(--gray-mid)}
+.b-dk .cki{color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.07)}
+.cki::before{content:'';flex-shrink:0;width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:6px}
+/* HERO */
+.hero{min-height:calc(100vh - var(--nav-h));background:var(--black);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:80px 4%;gap:60px;position:relative;overflow:hidden}
+.hero-noise{position:absolute;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;pointer-events:none}
+.hero-gl{position:absolute;top:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(200,16,46,.18) 0%,transparent 70%);pointer-events:none}
+.hero-gl2{position:absolute;bottom:-30%;left:20%;width:400px;height:400px;background:radial-gradient(circle,rgba(200,16,46,.07) 0%,transparent 70%);pointer-events:none}
+.hero-l{position:relative;z-index:1}
+.h-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.63rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:26px;opacity:0;animation:sUp .7s .1s var(--ease) forwards}
+.h-eyebrow::before{content:'';display:block;width:22px;height:1.5px;background:var(--red)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,7.5vw,7rem);line-height:.93;letter-spacing:.02em;color:var(--white);margin-bottom:28px;opacity:0;animation:sUp .7s .25s var(--ease) forwards}
+.hero h1 span{color:var(--red)}
+.hero-sub{font-size:.97rem;line-height:1.75;color:rgba(255,255,255,.52);max-width:480px;margin-bottom:38px;opacity:0;animation:sUp .7s .4s var(--ease) forwards}
+.hero-acts{display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:sUp .7s .55s var(--ease) forwards}
+.hero-r{position:relative;z-index:1;opacity:0;animation:sUp .7s .65s var(--ease) forwards}
+/* Hero mini bento */
+.hbento{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.hb{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:26px 22px;transition:all .3s}
+.hb:hover{background:rgba(255,255,255,.07);border-color:rgba(200,16,46,.3);transform:translateY(-3px)}
+.hb.sp2{grid-column:1/-1}
+.hb .hnum{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1;color:var(--red);margin-bottom:4px}
+.hb .hlabel{font-size:.66rem;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase}
+.hb .htitle{font-size:.83rem;font-weight:600;color:rgba(255,255,255,.78);margin-bottom:6px}
+.hb .htext{font-size:.76rem;color:rgba(255,255,255,.38);line-height:1.6}
+.hb .hbadge{display:inline-block;padding:3px 9px;background:rgba(200,16,46,.2);color:var(--red);font-size:.6rem;letter-spacing:.1em;font-weight:700;text-transform:uppercase;margin-bottom:9px}
+/* MARQUEE */
+.mqwrap{background:var(--red);overflow:hidden;padding:14px 0;display:flex;white-space:nowrap}
+.mqtrack{display:flex;animation:marquee 22s linear infinite}
+.mqitem{display:inline-flex;align-items:center;gap:22px;padding:0 28px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.1em;color:var(--white);border-right:1px solid rgba(255,255,255,.2)}
+.mqdot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4);flex-shrink:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* PROCESS */
+.proc-sec{background:var(--black);padding:100px 4%}
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border:1px solid rgba(255,255,255,.06)}
+.proc-step{padding:44px 32px;border-right:1px solid rgba(255,255,255,.06);transition:background .3s;position:relative}
+.proc-step:last-child{border-right:none}
+.proc-step:hover{background:rgba(200,16,46,.04)}
+.pnum{font-family:'Bebas Neue',sans-serif;font-size:4.5rem;line-height:1;color:rgba(255,255,255,.04);margin-bottom:-14px;display:block}
+.proc-step h3{font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:9px}
+.proc-step p{font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.65}
+.pconn{position:absolute;top:44px;right:-12px;width:24px;height:24px;border:1.5px solid rgba(200,16,46,.4);border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:2;font-size:.65rem;color:var(--red)}
+.proc-step:last-child .pconn{display:none}
+/* WHY */
+.why-grid{display:grid;grid-template-columns:5fr 7fr;gap:76px;align-items:center}
+.wpoints{display:flex;flex-direction:column;gap:1px;margin-top:22px}
+.wpoint{display:flex;align-items:flex-start;gap:16px;padding:20px 18px;background:var(--white);border:1px solid var(--gray-mid);transition:all .25s;cursor:default}
+.wpoint:hover{border-color:var(--black);background:var(--gray)}
+.wpoint:hover .wpico{background:var(--red);color:var(--white)}
+.wpico{width:38px;height:38px;flex-shrink:0;background:var(--black);display:flex;align-items:center;justify-content:center;color:var(--red);font-size:.95rem;transition:all .25s}
+.wpbody h4{font-size:.83rem;font-weight:700;margin-bottom:3px;color:var(--black)}
+.wpbody p{font-size:.78rem;color:var(--text-light);line-height:1.55}
+/* AUG */
+.aug-sec{background:var(--black);padding:96px 4%}
+.aug-grid{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:center}
+.aug-vis{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.aug-c{padding:28px 22px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);transition:all .3s}
+.aug-c:first-child{grid-column:1/-1;background:rgba(200,16,46,.1);border-color:rgba(200,16,46,.2)}
+.aug-c:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);transform:translateY(-3px)}
+.aug-c .aic{font-size:1.4rem;margin-bottom:11px}
+.aug-c h4{font-size:.83rem;font-weight:700;color:var(--white);margin-bottom:5px}
+.aug-c p{font-size:.76rem;color:rgba(255,255,255,.38);line-height:1.65}
+/* CTA STRIP */
+.ctas{background:var(--red);padding:76px 4%;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap}
+.ctas h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);color:var(--white);line-height:1.05;max-width:560px}
+.ctas-btns{display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0}
+/* FOOTER */
+footer{background:#0d0d0d;padding:62px 4% 28px}
+.fg{display:grid;grid-template-columns:2.5fr 1fr 1fr 1.5fr;gap:52px;margin-bottom:52px}
+.fg-b p{font-size:.8rem;color:rgba(255,255,255,.36);margin:16px 0 0;line-height:1.72;max-width:260px}
+.fg-c h4{font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:16px}
+.fg-c a{display:block;font-size:.8rem;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:9px;transition:color .2s}
+.fg-c a:hover{color:var(--red)}
+.fg-c p{font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:7px}
+.fbot{border-top:1px solid rgba(255,255,255,.06);padding-top:22px;display:flex;justify-content:space-between;align-items:center}
+.fbot span{font-size:.68rem;color:rgba(255,255,255,.2);letter-spacing:.05em}
+.fbot a{font-size:.68rem;color:var(--red);text-decoration:none}
+/* SERVICES */
+.srv-hero{background:var(--off-white);padding:88px 4% 58px;border-bottom:1px solid var(--gray-mid)}
+.srv-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);line-height:.93;margin-bottom:22px;color:var(--black)}
+.srv-hero h1 span{-webkit-text-stroke:1.5px var(--black);color:transparent}
+.srv-blk{padding:76px 4%}
+.srv-blk:nth-child(even){background:var(--gray)}
+.srv-in{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:start}
+.srv-in.rv{direction:rtl}
+.srv-in.rv>*{direction:ltr}
+.slbl{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--red);color:var(--white);padding:4px 11px;margin-bottom:16px}
+.srv-blk h2{font-family:'DM Serif Display',serif;font-size:1.65rem;margin-bottom:11px}
+.srv-sub{font-size:.92rem;font-weight:500;color:var(--gray-text);margin-bottom:15px}
+.engs{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:44px}
+.eng{padding:24px 26px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:all .25s}
+.eng:hover{border-color:rgba(200,16,46,.4)}
+.eng h3{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:7px}
+.eng h3 span{color:var(--red)}
+.eng p{font-size:.76rem;color:rgba(255,255,255,.38);line-height:1.58}
+/* ABOUT */
+.ab-hero{background:var(--black);padding:96px 4% 76px;display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:center;min-height:70vh;position:relative;overflow:hidden}
+.ab-vis{display:flex;flex-direction:column;gap:10px}
+.av-c{padding:30px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);transition:all .3s}
+.av-c:hover{border-color:rgba(200,16,46,.4);background:rgba(200,16,46,.05)}
+.av-c h3{font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:7px}
+.av-c p{font-size:.86rem;color:rgba(255,255,255,.5);line-height:1.68}
+.vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:56px}
+.vm-c{padding:54px 46px}
+.vm-c:first-child{background:var(--off-white);border:1px solid var(--gray-mid)}
+.vm-c:last-child{background:var(--red)}
+.vm-c h2{font-family:'DM Serif Display',serif;font-size:1.45rem;margin-bottom:14px;color:var(--black)}
+.vm-c:last-child h2{color:var(--white)}
+.vm-c p{font-size:.88rem;color:var(--text-light);line-height:1.75}
+.vm-c:last-child p{color:rgba(255,255,255,.75)}
+.vm-c .rbar{background:var(--red)}
+.vm-c:last-child .rbar{background:rgba(255,255,255,.3)}
+.ap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px}
+.ap-c{padding:38px 34px;border:1px solid var(--gray-mid);transition:all .3s}
+.ap-c:hover{background:var(--black)}
+.ap-c:hover h3,.ap-c:hover p{color:rgba(255,255,255,.5)}
+.ap-c:hover h3{color:var(--white)}
+.ap-c:hover .ap-n{color:rgba(255,255,255,.04)}
+.ap-n{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;line-height:1;color:rgba(0,0,0,.05);margin-bottom:-6px;transition:color .3s}
+.ap-c h3{font-size:.92rem;font-weight:700;margin-bottom:9px;transition:color .3s}
+.ap-c p{font-size:.8rem;color:var(--text-light);line-height:1.65;transition:color .3s}
+/* CAREERS */
+.car-hero{background:var(--black);padding:88px 4% 76px;text-align:center;position:relative;overflow:hidden}
+.car-hero::before{content:'TALENOPIA';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:18vw;color:rgba(255,255,255,.02);white-space:nowrap;pointer-events:none}
+.car-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,6rem);color:var(--white);margin-bottom:18px}
+.car-hero h1 span{color:var(--red)}
+.car-hero p{font-size:.97rem;color:rgba(255,255,255,.48);max-width:560px;margin:0 auto 32px;line-height:1.75}
+.car-cols{display:grid;grid-template-columns:1fr 1fr;gap:76px;padding:76px 4%;align-items:start}
+.rbento{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:18px}
+.rc{padding:16px 14px;border:1px solid var(--gray-mid);display:flex;align-items:center;gap:9px;transition:all .25s;font-size:.8rem;font-weight:600}
+.rc::before{content:'▸';color:var(--red);font-size:.62rem;flex-shrink:0}
+.rc:hover{background:var(--black);color:var(--white);border-color:var(--black)}
+.aply-sec{background:var(--gray);padding:76px 4%}
+.aply-in{max-width:740px;margin:0 auto}
+.asteps{display:flex;flex-direction:column;gap:9px;margin:36px 0}
+.astep{display:flex;gap:18px;align-items:flex-start;padding:20px 26px;background:var(--white);border:1px solid var(--gray-mid);transition:border-color .25s}
+.astep:hover{border-color:var(--red)}
+.asnum{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--red);line-height:1;flex-shrink:0;width:26px}
+.astxt h4{font-size:.86rem;font-weight:700;margin-bottom:3px}
+.astxt p{font-size:.78rem;color:var(--text-light)}
+/* CONTACT */
+.ct-layout{display:grid;grid-template-columns:5fr 7fr;gap:76px;align-items:start;padding:88px 4%}
+.ct-info-items{margin-top:26px;display:flex;flex-direction:column;gap:1px}
+.ct-item{display:flex;align-items:flex-start;gap:13px;padding:17px;border:1px solid var(--gray-mid);background:var(--white);transition:border-color .25s}
+.ct-item:hover{border-color:var(--red)}
+.ct-ico{width:36px;height:36px;flex-shrink:0;background:var(--black);display:flex;align-items:center;justify-content:center;color:var(--red);font-size:.85rem}
+.ct-det label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gray-text)}
+.ct-det p{font-size:.88rem;font-weight:600;color:var(--black);margin-top:2px}
+.stags{margin-top:28px}
+.stags h4{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gray-text);margin-bottom:11px}
+.tgroup{display:flex;flex-wrap:wrap;gap:6px}
+.ctag{font-size:.68rem;font-weight:600;padding:6px 12px;border:1px solid var(--gray-mid);background:var(--white);cursor:pointer;transition:all .2s}
+.ctag:hover,.ctag.on{background:var(--black);color:var(--white);border-color:var(--black)}
+.cform{display:flex;flex-direction:column;gap:14px}
+.crow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cf{display:flex;flex-direction:column;gap:6px}
+.cf label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black)}
+.cf input,.cf textarea,.cf select{padding:12px 15px;border:1.5px solid var(--gray-mid);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;background:var(--white);color:var(--text);transition:border-color .25s;border-radius:0;-webkit-appearance:none}
+.cf input:focus,.cf textarea:focus,.cf select:focus{border-color:var(--black);box-shadow:0 0 0 3px rgba(0,0,0,.04)}
+.cf textarea{resize:vertical;min-height:128px}
+.fok{display:none;padding:14px 18px;background:#f0faf4;border:1.5px solid #34a85a;color:#226b39;font-size:.83rem;font-weight:600;margin-top:4px}
+/* ANIMATIONS */
+@keyframes sUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes fIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s var(--ease),transform .65s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .bento .b-4{grid-column:span 6}.bento .b-3{grid-column:span 6}
+  .bento .b-8{grid-column:span 12}.bento .b-5{grid-column:span 6}.bento .b-7{grid-column:span 6}
+  .hero{grid-template-columns:1fr}.hero-r{display:none}
+  .proc-grid{grid-template-columns:1fr 1fr}
+  .fg{grid-template-columns:1fr 1fr}
+  .ab-hero{grid-template-columns:1fr}.vm-grid{grid-column:1}
+  .ap-grid{grid-template-columns:1fr 1fr}
+  .engs{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--white);flex-direction:column;padding:22px 4%;gap:18px;box-shadow:0 10px 40px rgba(0,0,0,.1);border-top:1px solid var(--gray-mid)}
+  .nav-links.open{display:flex}
+  .hamburger{display:flex}
+  .why-grid,.aug-grid,.srv-in,.car-cols,.ct-layout,.ab-hero{grid-template-columns:1fr;gap:36px}
+  .srv-in.rv{direction:ltr}
+  .crow{grid-template-columns:1fr}
+  .proc-grid,.ap-grid,.vm-grid,.engs{grid-template-columns:1fr}
+  .pconn{display:none!important}
+  .bento .b-4,.bento .b-3,.bento .b-6,.bento .b-8,.bento .b-5,.bento .b-7{grid-column:1/-1}
+  .hbento{grid-template-columns:1fr}.hb.sp2{grid-column:1}
+  .ctas{flex-direction:column;text-align:center}
+  .fg{grid-template-columns:1fr}
+  .rbento{grid-column:1fr}
+  .cursor,.cursor-ring{display:none}
+  body{cursor:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="logo" href="#" onclick="go('home');return false;">
+    <div class="logo-icon">
+      <svg viewBox="0 0 100 100" fill="none"><polygon points="50,6 90,90 10,90" stroke="#0a0a0a" stroke-width="8" fill="none" stroke-linejoin="round"/><line x1="28" y1="65" x2="72" y2="65" stroke="#0a0a0a" stroke-width="8" stroke-linecap="square"/></svg>
+    </div>
+    <div class="logo-wordmark"><b>TALENOPIA</b><small>Utopia of Talent Sourcing</small></div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" class="active" onclick="go('home');return false;">Home</a></li>
+    <li><a href="#" onclick="go('about');return false;">About</a></li>
+    <li><a href="#" onclick="go('services');return false;">Services</a></li>
+    <li><a href="#" onclick="go('careers');return false;">Careers</a></li>
+    <li><a href="#" class="nav-cta btn" onclick="go('contact');return false;">Contact Us</a></li>
+  </ul>
+  <button class="hamburger" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-noise"></div><div class="hero-gl"></div><div class="hero-gl2"></div>
+    <div class="hero-l">
+      <div class="h-eyebrow">Leading Resource Augmentation Firm</div>
+      <h1>Enterprise<br>Ready <span>Talent.</span><br>On Demand.</h1>
+      <p class="hero-sub">Talenopia bridges skill gaps for global enterprises—providing access to a vetted pool of top-tier IT and non-IT professionals without long hiring cycles or hidden costs.</p>
+      <div class="hero-acts">
+        <a href="#" class="btn btn-red" onclick="go('contact');return false;">Hire Talent <span class="arr"></span></a>
+        <a href="#" class="btn btn-outline-w" onclick="go('services');return false;">Explore Services</a>
+      </div>
+    </div>
+    <div class="hero-r">
+      <div class="hbento">
+        <div class="hb"><div class="hbadge">Instant Access</div><div class="htitle">Pre-Vetted Talent Pool</div><div class="htext">Developers, DevOps, AI/ML specialists, and cybersecurity experts ready to deploy immediately.</div></div>
+        <div class="hb"><div class="hnum">0%</div><div class="hlabel">Hidden Costs</div></div>
+        <div class="hb"><div class="hnum">4<span style="color:rgba(255,255,255,.25);font-size:1.5rem">+</span></div><div class="hlabel">Engagement Models</div></div>
+        <div class="hb sp2"><div class="hbadge">Why Talenopia?</div><div class="htitle">Seamless Team Extension</div><div class="htext">Our professionals integrate with your workflow as genuine team members—not external vendors.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="mqwrap"><div class="mqtrack">
+    <span class="mqitem"><span class="mqdot"></span>IT Staff Augmentation</span><span class="mqitem"><span class="mqdot"></span>AI / ML Engineers</span><span class="mqitem"><span class="mqdot"></span>Cloud Engineering</span><span class="mqitem"><span class="mqdot"></span>DevOps Specialists</span><span class="mqitem"><span class="mqdot"></span>Cybersecurity Experts</span><span class="mqitem"><span class="mqdot"></span>Non-IT Augmentation</span><span class="mqitem"><span class="mqdot"></span>Transparent Pricing</span><span class="mqitem"><span class="mqdot"></span>Blockchain Developers</span><span class="mqitem"><span class="mqdot"></span>Enterprise Ready</span>
+    <span class="mqitem"><span class="mqdot"></span>IT Staff Augmentation</span><span class="mqitem"><span class="mqdot"></span>AI / ML Engineers</span><span class="mqitem"><span class="mqdot"></span>Cloud Engineering</span><span class="mqitem"><span class="mqdot"></span>DevOps Specialists</span><span class="mqitem"><span class="mqdot"></span>Cybersecurity Experts</span><span class="mqitem"><span class="mqdot"></span>Non-IT Augmentation</span><span class="mqitem"><span class="mqdot"></span>Transparent Pricing</span><span class="mqitem"><span class="mqdot"></span>Blockchain Developers</span><span class="mqitem"><span class="mqdot"></span>Enterprise Ready</span>
+  </div></div>
+
+  <!-- INTRO -->
+  <section class="wrap">
+    <div style="display:grid;grid-template-columns:5fr 7fr;gap:76px;align-items:center" class="reveal">
+      <div>
+        <div class="eyebrow">Who We Are</div>
+        <h2 class="section-h">Your Premier Partner in <em>Resource Augmentation</em></h2>
+        <div class="rbar"></div>
+        <p class="body-text">Talenopia is a leading resource augmentation firm specializing in IT and non-IT staff augmentation. We bridge skill gaps for global enterprises by providing access to a vetted pool of top-tier professionals who integrate seamlessly with your workflow.</p>
+        <br><br>
+        <a href="#" class="btn btn-black" onclick="go('about');return false;">Learn More <span class="arr"></span></a>
+      </div>
+      <div>
+        <div class="eyebrow">What We Offer</div>
+        <h2 class="section-h" style="font-size:1.45rem">Done Right — Every Time</h2>
+        <div class="rbar"></div>
+        <div class="cklist">
+          <div class="cki">Scale teams without long-term hiring commitments</div>
+          <div class="cki">Access niche expertise on demand — cloud, AI, DevOps, security</div>
+          <div class="cki">Maintain full control over scope, cost, and delivery</div>
+          <div class="cki">Resources evaluated for skills AND cultural alignment</div>
+          <div class="cki">Pay-as-you-go talent — no fixed bids, no scope lock-ins</div>
+          <div class="cki">Transparent pricing — zero hidden charges, zero complexity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BENTO GRID -->
+    <div class="bento">
+      <div class="b b-4 bstat reveal d1"><div class="btag">Speed</div><div class="snum">48<span>h</span></div><div class="slabel">Time to First CVs</div></div>
+      <div class="b b-4 b-dk bstat reveal d2"><div class="btag">Scale</div><div class="snum">IT<span style="font-size:1.8rem">&amp;</span></div><div class="slabel">Non-IT Coverage</div></div>
+      <div class="b b-4 bstat reveal d3"><div class="btag">Trust</div><div class="snum">100<span>%</span></div><div class="slabel">Pricing Transparency</div></div>
+
+      <div class="b b-6 reveal">
+        <div class="bico">☁️</div>
+        <h3>Cloud Engineering</h3>
+        <p>Certified professionals across AWS, Azure, and GCP for cloud-native architecture, migration, and management at enterprise scale.</p>
+        <div class="pills"><span class="pill">AWS</span><span class="pill">Azure</span><span class="pill">GCP</span><span class="pill">Cloud-Native</span><span class="pill">IaC</span></div>
+      </div>
+      <div class="b b-6 b-dk reveal d1">
+        <div class="bico">🤖</div>
+        <h3>AI / ML Engineers</h3>
+        <p>Machine learning specialists and AI engineers ready for enterprise-grade deployments, innovation pipelines, and MLOps implementation.</p>
+        <div class="pills"><span class="pill">Deep Learning</span><span class="pill">NLP</span><span class="pill">MLOps</span><span class="pill">PyTorch</span><span class="pill">Data Science</span></div>
+      </div>
+
+      <div class="b b-3 b-rd b-r2 reveal">
+        <div class="bico">⚡</div>
+        <h3>Faster Time-to-Market</h3>
+        <p>Accelerate project timelines by quickly onboarding skilled professionals without long recruitment cycles or ramp-up delays.</p>
+      </div>
+      <div class="b b-3 bstat reveal d1"><div class="btag">Flexible</div><div class="snum">4<span>+</span></div><div class="slabel">Engagement Models</div></div>
+      <div class="b b-6 reveal d2">
+        <div class="bico">🔐</div>
+        <h3>Cybersecurity Professionals</h3>
+        <p>Security analysts, architects, and compliance specialists to protect your digital environment and meet enterprise-grade security standards.</p>
+        <div class="pills"><span class="pill">SOC Analysts</span><span class="pill">Pen Testing</span><span class="pill">Compliance</span><span class="pill">Risk Mgmt</span></div>
+      </div>
+      <div class="b b-3 reveal d1"><div class="btag">Savings</div><div class="snum" style="font-family:'Bebas Neue';font-size:1.8rem;color:var(--black)">Zero</div><div class="slabel" style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-text)">Overhead on Hiring</div><p style="margin-top:8px;font-size:.76rem">Reduce recruitment, training, and benefits costs with on-demand talent.</p></div>
+
+      <div class="b b-4 b-gy reveal">
+        <div class="bico">🔄</div>
+        <h3>DevOps & Cloud-Native</h3>
+        <p>CI/CD, containerization, IaC, and modern delivery practices for high-velocity engineering teams.</p>
+      </div>
+      <div class="b b-8 b-dk reveal d1">
+        <div class="btag">Non-IT Augmentation</div>
+        <h3>Beyond Technology Roles</h3>
+        <p>Talenopia supports organizations with non-IT resource augmentation—operations, compliance, marketing, and business functions—ensuring holistic scaling under a single engagement model.</p>
+        <div class="pills" style="margin-top:16px"><span class="pill">Operations</span><span class="pill">Marketing</span><span class="pill">Compliance</span><span class="pill">Business Support</span><span class="pill">Governance</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="proc-sec reveal">
+    <div class="eyebrow" style="color:var(--red)">How It Works</div>
+    <h2 class="section-h wh">A Simple, <em style="color:var(--red)">Enterprise-Friendly</em> Process</h2>
+    <div class="rbar"></div>
+    <div class="proc-grid">
+      <div class="proc-step"><span class="pnum">01</span><h3>Requirement Discussion</h3><p>Understand your project needs, timelines, skill expectations, and cultural requirements before anything else.</p><div class="pconn">→</div></div>
+      <div class="proc-step"><span class="pnum">02</span><h3>Resource Shortlisting</h3><p>Share CVs of pre-vetted professionals—curated specifically for your requirements, not generic profiles.</p><div class="pconn">→</div></div>
+      <div class="proc-step"><span class="pnum">03</span><h3>Interview &amp; Selection</h3><p>You evaluate and select the right talent. Full control over who joins your team and when.</p><div class="pconn">→</div></div>
+      <div class="proc-step"><span class="pnum">04</span><h3>Onboarding &amp; Integration</h3><p>Smooth induction into your workflow with minimal disruption to ongoing operations.</p></div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="wrap" style="background:var(--off-white)">
+    <div class="why-grid">
+      <div class="reveal">
+        <div class="eyebrow">Why Choose Us</div>
+        <h2 class="section-h">Built for <em>Long-Term</em> Partnerships</h2>
+        <div class="rbar"></div>
+        <p class="body-text">Organizations choose Talenopia because we focus on reliability, clarity, and outcomes. We don't just provide resources—we build partnerships that scale with your business goals.</p>
+        <br>
+        <a href="#" class="btn btn-black" onclick="go('contact');return false;">Talk to an Expert</a>
+      </div>
+      <div class="wpoints reveal d1">
+        <div class="wpoint"><div class="wpico">⚡</div><div class="wpbody"><h4>Reduce Hiring Time</h4><p>Access pre-vetted experts instantly—no weeks of recruitment overhead or long processes.</p></div></div>
+        <div class="wpoint"><div class="wpico">◎</div><div class="wpbody"><h4>Control Costs</h4><p>Scale up or down as needed—pay only for what you use, with full transparency.</p></div></div>
+        <div class="wpoint"><div class="wpico">⟳</div><div class="wpbody"><h4>Seamless Integration</h4><p>Our professionals work as genuine members of your team, not as external vendors.</p></div></div>
+        <div class="wpoint"><div class="wpico">★</div><div class="wpbody"><h4>Domain Expertise</h4><p>Skilled across Cloud, DevOps, Data, AI/ML, Cybersecurity, Blockchain, and more.</p></div></div>
+        <div class="wpoint"><div class="wpico">✓</div><div class="wpbody"><h4>Cultural &amp; Compliance Fit</h4><p>Every resource aligned to your environment, values, and enterprise-grade standards.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS RA -->
+  <section class="aug-sec reveal">
+    <div class="aug-grid">
+      <div>
+        <div class="eyebrow" style="color:var(--red)">Resource Augmentation Explained</div>
+        <h2 class="section-h wh">Flexible, Scalable, <em style="color:var(--red)">and Skilled</em></h2>
+        <div class="rbar"></div>
+        <p class="body-text wh">Resource Augmentation lets you extend your team with expert professionals—without the long hiring cycles or overheads. Whether you need one engineer or an entire team, Talenopia provides ready-to-deploy talent that integrates seamlessly with your workflow.</p>
+        <br><br>
+        <a href="#" class="btn btn-outline-w" onclick="go('services');return false;">View All Services <span class="arr"></span></a>
+      </div>
+      <div class="aug-vis reveal d2">
+        <div class="aug-c"><div class="aic">🔄</div><h4>Flexibility &amp; Scalability</h4><p>Easily scale your team up or down based on project needs—without long-term commitments or fixed headcount pressure.</p></div>
+        <div class="aug-c"><div class="aic">💰</div><h4>Cost Efficiency</h4><p>Reduce overhead like recruitment, training, and benefits by hiring on-demand talent exactly when needed.</p></div>
+        <div class="aug-c"><div class="aic">🚀</div><h4>Faster Time-to-Market</h4><p>Accelerate project timelines by quickly onboarding skilled professionals with minimal ramp-up time required.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="ctas reveal">
+    <h2>Ready to Build Your Team with Confidence?</h2>
+    <div class="ctas-btns">
+      <a href="#" class="btn btn-outline-w" onclick="go('contact');return false;">Hire Talent</a>
+      <a href="#" class="btn btn-white" onclick="go('contact');return false;">Contact Us <span class="arr" style="background:var(--red)"></span></a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="fg">
+      <div class="fg-b">
+        <a class="logo" href="#" onclick="go('home');return false;"><div class="logo-icon"><svg viewBox="0 0 100 100" fill="none"><polygon points="50,6 90,90 10,90" stroke="#fff" stroke-width="8" fill="none" stroke-linejoin="round"/><line x1="28" y1="65" x2="72" y2="65" stroke="#fff" stroke-width="8" stroke-linecap="square"/></svg></div><div class="logo-wordmark"><b style="color:#fff">TALENOPIA</b><small>Utopia of Talent Sourcing</small></div></a>
+        <p>A resource augmentation company built for organizations that value agility, precision, and trust.</p>
+      </div>
+      <div class="fg-c"><h4>Navigation</h4><a href="#" onclick="go('home');return false;">Home</a><a href="#" onclick="go('about');return false;">About Us</a><a href="#" onclick="go('services');return false;">Services</a><a href="#" onclick="go('careers');return false;">Careers</a><a href="#" onclick="go('contact');return false;">Contact</a></div>
+      <div class="fg-c"><h4>Services</h4><a href="#" onclick="go('services');return false;">IT Augmentation</a><a href="#" onclick="go('services');return false;">Non-IT Augmentation</a><a href="#" onclick="go('services');return false;">Specialized Talent</a><a href="#" onclick="go('services');return false;">Engagement Models</a></div>
+      <div class="fg-c"><h4>Contact</h4><p>info@talenopia.com</p><p>careers@talenopia.com</p><p style="margin-top:6px">www.talenopia.com</p></div>
+    </div>
+    <div class="fbot"><span>© 2025 Talenopia. All rights reserved.</span><a href="#">Privacy Policy</a></div>
+  </footer>
+</div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<div class="page" id="page-about">
+  <div class="ab-hero">
+    <div class="hero-noise"></div><div class="hero-gl"></div>
+    <div>
+      <div class="eyebrow" style="color:var(--red)">About Talenopia</div>
+      <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5.5rem);color:var(--white);line-height:.93;margin-bottom:22px">Building Teams That <span style="color:var(--red)">Power</span> Business Growth</h1>
+      <div class="rbar"></div>
+      <p style="font-size:.97rem;color:rgba(255,255,255,.5);max-width:480px;line-height:1.78">A modern resource augmentation company helping enterprises and growing businesses scale with confidence—exactly when it's needed, without the friction of traditional hiring.</p>
+      <br>
+      <a href="#" class="btn btn-red" onclick="go('contact');return false;">Connect with Us</a>
+    </div>
+    <div class="ab-vis">
+      <div class="av-c reveal"><h3>Who We Are</h3><p>At Talenopia, resource augmentation should be simple, transparent, and outcome-driven. Our approach is built around understanding your business objectives, team dynamics, and operational standards. Every professional we deploy is selected for technical competence, cultural alignment, and professional reliability.</p></div>
+      <div class="av-c reveal d1"><h3>What We Stand For</h3><p>Precision, transparency, and trust. Talenopia was created to address common challenges—long hiring cycles, unclear pricing, and limited flexibility. We operate with hyper-specialized talent pools, quick onboarding, transparent pricing, and flexible engagement structures aligned to real business needs.</p></div>
+    </div>
+  </div>
+
+  <section class="wrap reveal">
+    <div class="eyebrow">Our Expertise</div>
+    <h2 class="section-h">Specialized Talent Across <em>IT &amp; Non-IT</em></h2>
+    <div class="rbar"></div>
+    <div class="bento">
+      <div class="b b-6 reveal">
+        <div class="bico">💻</div>
+        <h3>IT Specializations</h3>
+        <p>Deep expertise across the full technology spectrum for enterprise-grade requirements and innovation initiatives.</p>
+        <div class="cklist" style="margin-top:16px">
+          <div class="cki">Cloud Engineering (AWS, Azure, GCP)</div>
+          <div class="cki">DevOps and Cloud-Native Technologies</div>
+          <div class="cki">AI / Machine Learning &amp; Data Engineering</div>
+          <div class="cki">Cybersecurity &amp; Compliance</div>
+          <div class="cki">Blockchain &amp; Emerging Tech</div>
+          <div class="cki">Software Development &amp; Architecture</div>
+        </div>
+      </div>
+      <div class="b b-6 b-dk reveal d1">
+        <div class="bico">🏢</div>
+        <h3>Non-IT Functions</h3>
+        <p>Enabling both technology initiatives and core business operations under a unified engagement model.</p>
+        <div class="cklist" style="margin-top:16px">
+          <div class="cki">Operations &amp; Process Support</div>
+          <div class="cki">Marketing &amp; Growth Functions</div>
+          <div class="cki">Compliance &amp; Governance</div>
+          <div class="cki">Business &amp; Administrative Support</div>
+          <div class="cki">Functional Specialist Roles</div>
+        </div>
+      </div>
+      <div class="b b-4 b-rd bstat reveal"><div class="btag">Global</div><div class="snum">World<span style="font-size:1.3rem">-class</span></div><div class="slabel">Talent Standards</div></div>
+      <div class="b b-4 bstat reveal d1"><div class="btag">Pricing</div><div class="snum">0<span>%</span></div><div class="slabel">Hidden Costs. Ever.</div></div>
+      <div class="b b-4 reveal d2"><div class="bico">♦</div><h3>Relationship-Driven</h3><p>Long-term value over short-term placements. We build partnerships, not just fill seats.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap-sm" style="background:var(--gray)">
+    <div style="text-align:center" class="reveal">
+      <div class="eyebrow center">Vision &amp; Mission</div>
+      <h2 class="section-h">Our North Star</h2>
+      <div class="rbar c"></div>
+    </div>
+    <div class="vm-grid reveal d1">
+      <div class="vm-c">
+        <div class="eyebrow">Our Vision</div>
+        <h2>Empowering Growth Through People and Possibilities</h2>
+        <div class="rbar"></div>
+        <p>To become the most trusted partner for organizations seeking agility, expertise, and innovation by enabling access to world-class talent, when and where it's needed most.</p>
+      </div>
+      <div class="vm-c">
+        <div class="eyebrow" style="color:rgba(255,255,255,.65)">Our Mission</div>
+        <h2>Bridging Talent Gaps with Confidence</h2>
+        <div class="rbar" style="background:rgba(255,255,255,.3)"></div>
+        <p>To bridge the talent gap by delivering skilled, reliable, and adaptable professionals who integrate seamlessly into our clients' vision—helping them scale faster, innovate smarter, and achieve more.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap reveal">
+    <div class="eyebrow">Our Approach</div>
+    <h2 class="section-h">Designed for Enterprises <em>and</em> Growing Businesses</h2>
+    <div class="rbar"></div>
+    <div class="ap-grid">
+      <div class="ap-c"><div class="ap-n">01</div><h3>Clear Processes</h3><p>From requirement discussion to onboarding—every step is defined, transparent, and client-controlled.</p></div>
+      <div class="ap-c"><div class="ap-n">02</div><h3>Professional Accountability</h3><p>Every resource backed by clear engagement structures with defined expectations and performance standards.</p></div>
+      <div class="ap-c"><div class="ap-n">03</div><h3>Compliance-Aware</h3><p>All professionals selected with enterprise compliance, governance, and regulatory standards in mind.</p></div>
+      <div class="ap-c"><div class="ap-n">04</div><h3>Long-Term Collaboration</h3><p>We aim to be a strategic partner, not a one-time vendor. Relationships built on trust and performance.</p></div>
+      <div class="ap-c"><div class="ap-n">05</div><h3>Flexible Capacity</h3><p>Scale teams, adjust capacity, and maintain cost control without unnecessary contractual rigidity.</p></div>
+      <div class="ap-c" style="background:var(--black);border-color:var(--black)"><div class="ap-n" style="color:rgba(255,255,255,.04)">06</div><h3 style="color:var(--white)">Partner, Not Vendor</h3><p style="color:rgba(255,255,255,.42)">Resources function as an extension of your internal teams—not external suppliers.</p></div>
+    </div>
+  </section>
+
+  <div class="ctas reveal">
+    <h2>Let's Build Something Strong Together</h2>
+    <div class="ctas-btns"><a href="#" class="btn btn-white" onclick="go('contact');return false;">Connect with Us</a></div>
+  </div>
+
+  <footer><div class="fg"><div class="fg-b"><a class="logo" href="#" onclick="go('home');return false;"><div class="logo-icon"><svg viewBox="0 0 100 100" fill="none"><polygon points="50,6 90,90 10,90" stroke="#fff" stroke-width="8" fill="none" stroke-linejoin="round"/><line x1="28" y1="65" x2="72" y2="65" stroke="#fff" stroke-width="8" stroke-linecap="square"/></svg></div><div class="logo-wordmark"><b style="color:#fff">TALENOPIA</b><small>Utopia of Talent Sourcing</small></div></a><p>Resource augmentation built for organizations that value agility, precision, and trust.</p></div><div class="fg-c"><h4>Navigation</h4><a href="#" onclick="go('home');return false;">Home</a><a href="#" onclick="go('about');return false;">About</a><a href="#" onclick="go('services');return false;">Services</a><a href="#" onclick="go('careers');return false;">Careers</a><a href="#" onclick="go('contact');return false;">Contact</a></div><div class="fg-c"><h4>Services</h4><a href="#" onclick="go('services');return false;">IT Augmentation</a><a href="#" onclick="go('services');return false;">Non-IT Augmentation</a><a href="#" onclick="go('services');return false;">Specialized Talent</a></div><div class="fg-c"><h4>Contact</h4><p>info@talenopia.com</p><p>careers@talenopia.com</p><p>www.talenopia.com</p></div></div><div class="fbot"><span>© 2025 Talenopia. All rights reserved.</span><a href="#">Privacy Policy</a></div></footer>
+</div>
+
+<!-- ══════════ SERVICES ══════════ -->
+<div class="page" id="page-services">
+  <div class="srv-hero">
+    <div class="eyebrow">What We Do</div>
+    <h1>Resource <span>Augmentation</span><br>Services for Scale</h1>
+    <div class="rbar"></div>
+    <p class="body-text">Flexible, transparent, and enterprise-ready resource augmentation across IT and non-IT domains. We deliver professionals who integrate seamlessly and deliver from day one.</p>
+  </div>
+
+  <!-- IT -->
+  <div class="srv-blk">
+    <div class="srv-in reveal">
+      <div>
+        <span class="slbl">01 — IT Augmentation</span>
+        <h2>Access Specialized Technology Talent — On Demand</h2>
+        <div class="srv-sub">IT Staff Augmentation</div>
+        <p class="body-text">Our IT staff augmentation helps organizations scale technical teams with precision. Skilled professionals contribute immediately across development, infrastructure, and emerging technology domains.</p>
+        <div class="pills" style="margin-top:20px"><span class="pill">Software Developers</span><span class="pill">Cloud Engineers</span><span class="pill">DevOps Specialists</span><span class="pill">AI / ML Engineers</span><span class="pill">Cybersecurity Experts</span><span class="pill">Data Engineers</span><span class="pill">Blockchain Devs</span><span class="pill">Enterprise IT</span></div>
+      </div>
+      <div style="background:var(--black);padding:46px 38px;display:flex;flex-direction:column;justify-content:center">
+        <div class="eyebrow" style="color:var(--red)">Why IT Augmentation?</div>
+        <h3 style="color:var(--white);font-size:1.05rem;margin-bottom:18px">Scale Technical Teams with Precision</h3>
+        <div class="cklist">
+          <div class="cki" style="color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.07)">Scale without long-term hiring commitments</div>
+          <div class="cki" style="color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.07)">Access niche expertise on demand</div>
+          <div class="cki" style="color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.07)">Resources vetted for technical maturity</div>
+          <div class="cki" style="color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.07)">Enterprise-grade compliance readiness</div>
+          <div class="cki" style="color:rgba(255,255,255,.45);border-color:rgba(255,255,255,.07)">Seamless workflow integration from day one</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Non-IT -->
+  <div class="srv-blk">
+    <div class="srv-in rv reveal">
+      <div>
+        <span class="slbl">02 — Non-IT Augmentation</span>
+        <h2>Strengthen Business Operations with Trusted Professionals</h2>
+        <div class="srv-sub">Non-IT Staff Augmentation</div>
+        <p class="body-text">Beyond technology roles, Talenopia supports organizations with non-IT resource augmentation to ensure smooth business operations and scalable support functions under a unified model.</p>
+        <div class="pills" style="margin-top:20px"><span class="pill">Operations</span><span class="pill">Marketing &amp; Growth</span><span class="pill">Compliance</span><span class="pill">Governance</span><span class="pill">Business Support</span><span class="pill">Admin Specialists</span></div>
+      </div>
+      <div style="background:var(--gray);padding:46px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center">
+        <div style="font-size:3.2rem;margin-bottom:18px">🏢</div>
+        <div class="eyebrow center" style="color:var(--red)">Dual Capability</div>
+        <p style="font-size:.86rem;color:var(--text-light);line-height:1.68;max-width:280px">Technology-driven initiatives and core business operations under a single, consistent engagement model.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specialized Talent Bento -->
+  <div class="srv-blk">
+    <div class="reveal">
+      <span class="slbl">03 — Specialized Talent</span>
+      <h2>Hyper-Specialized Expertise for High-Impact Needs</h2>
+      <div class="srv-sub">Niche AI/ML, Blockchain, Cloud, Cybersecurity</div>
+      <p class="body-text">Talenopia maintains focused pipelines of specialists who understand modern enterprise environments—not generic profiles from broad candidate pools.</p>
+    </div>
+    <div class="bento" style="margin-top:36px">
+      <div class="b b-3 reveal"><div class="bico">🤖</div><h3>AI &amp; ML</h3><p>Deep learning, NLP, computer vision, MLOps specialists for AI-driven product development.</p></div>
+      <div class="b b-3 b-dk reveal d1"><div class="bico">☁️</div><h3>Cloud Native</h3><p>AWS, Azure, GCP certified engineers for multi-cloud architecture and migration projects.</p></div>
+      <div class="b b-3 reveal d2"><div class="bico">🔐</div><h3>Cybersecurity</h3><p>SOC analysts, pen testers, and compliance experts for enterprise security posture.</p></div>
+      <div class="b b-3 b-rd reveal d3"><div class="bico">⛓️</div><h3>Blockchain</h3><p>Smart contract, DApp, and Web3 developers for decentralized application projects.</p></div>
+    </div>
+  </div>
+
+  <!-- Engagement Models -->
+  <div class="srv-blk" style="background:var(--black)">
+    <div class="reveal">
+      <div class="eyebrow" style="color:var(--red)">04 — Engagement Models</div>
+      <h2 class="section-h wh">Flexible Structures. <em style="color:var(--red)">Complete Transparency.</em></h2>
+      <div class="rbar"></div>
+      <p class="body-text wh">Multiple engagement models to suit different business requirements while maintaining clarity and control. No hidden charges. No unnecessary complexity.</p>
+    </div>
+    <div class="engs" style="margin-top:44px">
+      <div class="eng"><h3><span>T&amp;M</span> Time &amp; Material</h3><p>Pay-as-you-go talent. No fixed bids, no scope lock-ins. Expert resources billed hourly or daily for exact work performed—maximum flexibility.</p></div>
+      <div class="eng"><h3><span>◎</span> Monthly Dedicated</h3><p>Ideal for long-term capacity needs. Consistent availability and deeper team integration for sustained delivery.</p></div>
+      <div class="eng"><h3><span>▣</span> Fixed Resources</h3><p>Stable, committed resources aligned to defined responsibilities and long-term organizational requirements.</p></div>
+      <div class="eng" style="background:rgba(200,16,46,.1);border-color:rgba(200,16,46,.3)"><h3><span>↻</span> Replacement Support</h3><p>Subject to availability, ensuring continuity and confidence throughout long-term engagements.</p></div>
+    </div>
+  </div>
+
+  <div class="ctas reveal">
+    <h2>Let's Discuss Your Resource Requirements</h2>
+    <div class="ctas-btns"><a href="#" class="btn btn-white" onclick="go('contact');return false;">Connect with Us <span class="arr" style="background:var(--red)"></span></a></div>
+  </div>
+
+  <footer><div class="fg"><div class="fg-b"><a class="logo" href="#" onclick="go('home');return false;"><div class="logo-icon"><svg viewBox="0 0 100 100" fill="none"><polygon points="50,6 90,90 10,90" stroke="#fff" stroke-width="8" fill="none" stroke-linejoin="round"/><line x1="28" y1="65" x2="72" y2="65" stroke="#fff" stroke-width="8" stroke-linecap="square"/></svg></div><div class="logo-wordmark"><b style="color:#fff">TALENOPIA</b><small>Utopia of Talent Sourcing</small></div></a><p>Resource augmentation built for organizations that value agility, precision, and trust.</p></div><div class="fg-c"><h4>Navigation</h4><a href="#" onclick="go('home');return false;">Home</a><a href="#" onclick="go('about');return false;">About</a><a href="#" onclick="go('services');return false;">Services</a><a href="#" onclick="go('careers');return false;">Careers</a><a href="#" onclick="go('contact');return false;">Contact</a></div><div class="fg-c"><h4>Services</h4><a href="#" onclick="go('services');return false;">IT Augmentation</a><a href="#" onclick="go('services');return false;">Non-IT Augmentation</a><a href="#" onclick="go('services');return false;">Specialized Talent</a><a href="#" onclick="go('services');return false;">Engagement Models</a></div><div class="fg-c"><h4>Contact</h4><p>info@talenopia.com</p><p>careers@talenopia.com</p><p>www.talenopia.com</p></div></div><div class="fbot"><span>© 2025 Talenopia. All rights reserved.</span><a href="#">Privacy Policy</a></div></footer>
+</div>
+
+<!-- ══════════ CAREERS ══════════ -->
+<div class="page" id="page-careers">
+  <div class="car-hero">
+    <div class="eyebrow center" style="color:var(--red);justify-content:center">Careers at Talenopia</div>
+    <h1>Build Your Career<br>with <span>Purpose</span></h1>
+    <p>At Talenopia, great work happens when talented people are aligned with meaningful opportunities. If you value quality, accountability, and continuous learning—we'd like to hear from you.</p>
+    <a href="mailto:careers@talenopia.com" class="btn btn-red">Send Your Profile <span class="arr"></span></a>
+  </div>
+
+  <div class="car-cols">
+    <div class="reveal">
+      <div class="eyebrow">Why Work with Us</div>
+      <h2 class="section-h">Long-Term <em>Professional</em> Relationships</h2>
+      <div class="rbar"></div>
+      <div class="wpoints">
+        <div class="wpoint"><div class="wpico">◈</div><div class="wpbody"><h4>IT &amp; Non-IT Opportunities</h4><p>Wide range of roles across technology and business functions for diverse professionals.</p></div></div>
+        <div class="wpoint"><div class="wpico">★</div><div class="wpbody"><h4>Enterprise Exposure</h4><p>Work with leading organizations and high-growth business environments globally.</p></div></div>
+        <div class="wpoint"><div class="wpico">✓</div><div class="wpbody"><h4>Clear Role Expectations</h4><p>Defined responsibilities, professional engagement, and clear accountability.</p></div></div>
+        <div class="wpoint"><div class="wpico">♦</div><div class="wpbody"><h4>Performance-Based Growth</h4><p>Long-term associations built on performance, alignment, and mutual respect.</p></div></div>
+      </div>
+    </div>
+    <div class="reveal d1">
+      <div class="eyebrow">Who We Work With</div>
+      <h2 class="section-h" style="font-size:1.4rem">Professionals Across Domains</h2>
+      <div class="rbar"></div>
+      <div class="rbento">
+        <div class="rc">Software Development</div>
+        <div class="rc">Cloud (AWS/Azure/GCP)</div>
+        <div class="rc">DevOps &amp; Automation</div>
+        <div class="rc">AI / Machine Learning</div>
+        <div class="rc">Cybersecurity</div>
+        <div class="rc">Blockchain</div>
+        <div class="rc">Operations &amp; Business</div>
+        <div class="rc">Marketing &amp; Growth</div>
+        <div class="rc">Compliance &amp; Risk</div>
+        <div class="rc">Data Engineering</div>
+      </div>
+      <p style="font-size:.74rem;color:var(--gray-text);margin-top:13px">Opportunities vary based on client requirements and availability.</p>
+    </div>
+  </div>
+
+  <div class="aply-sec">
+    <div class="aply-in reveal">
+      <div style="text-align:center"><div class="eyebrow center">How to Apply</div><h2 class="section-h" style="font-size:1.75rem">Ready to Join Us?</h2><div class="rbar c"></div></div>
+      <div class="asteps">
+        <div class="astep"><div class="asnum">1</div><div class="astxt"><h4>Prepare Your Profile</h4><p>Updated resume, primary skill set, years of experience, and preferred role type (IT / Non-IT).</p></div></div>
+        <div class="astep"><div class="asnum">2</div><div class="astxt"><h4>Share Your Availability</h4><p>Let us know your availability and preferred engagement type (full-time, part-time, contract).</p></div></div>
+        <div class="astep"><div class="asnum">3</div><div class="astxt"><h4>Send Your Application</h4><p>Email your profile to <strong>careers@talenopia.com</strong> with a brief introduction about yourself.</p></div></div>
+        <div class="astep"><div class="asnum">4</div><div class="astxt"><h4>We'll Reach Out</h4><p>Our team reviews your details and reaches out if there's a suitable match for your profile.</p></div></div>
+      </div>
+      <div style="text-align:center">
+        <a href="mailto:careers@talenopia.com" class="btn btn-black" style="padding:15px 38px">careers@talenopia.com <span class="arr"></span></a>
+        <p style="font-size:.76rem;color:var(--gray-text);margin-top:14px">We value professionalism, commitment, and expertise.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ctas reveal">
+    <h2>Believe in Delivering Quality Work? Let's Talk.</h2>
+    <div class="ctas-btns"><a href="mailto:careers@talenopia.com" class="btn btn-outline-w">Email Your Profile</a></div>
+  </div>
+
+  <footer><div class="fg"><div class="fg-b"><a class="logo" href="#" onclick="go('home');return false;"><div class="logo-icon"><svg viewBox="0 0 100 100" fill="none"><polygon points="50,6 90,90 10,90" stroke="#fff" stroke-width="8" fill="none" stroke-linejoin="round"/><line x1="28" y1="65" x2="72" y2="65" stroke="#fff" stroke-width="8" stroke-linecap="square"/></svg></div><div class="logo-wordmark"><b style="color:#fff">TALENOPIA</b><small>Utopia of Talent Sourcing</small></div></a><p>Resource augmentation built for organizations that value agility, precision, and trust.</p></div><div class="fg-c"><h4>Navigation</h4><a href="#" onclick="go('home');return false;">Home</a><a href="#" onclick="go('about');return false;">About</a><a href="#" onclick="go('services');return false;">Services</a><a href="#" onclick="go('careers');return false;">Careers</a><a href="#" onclick="go('contact');return false;">Contact</a></div><div class="fg-c"><h4>Services</h4><a href="#" onclick="go('services');return false;">IT Augmentation</a><a href="#" onclick="go('services');return false;">Non-IT Augmentation</a><a href="#" onclick="go('services');return false;">Specialized Talent</a></div><div class="fg-c"><h4>Contact</h4><p>info@talenopia.com</p><p>careers@talenopia.com</p><p>www.talenopia.com</p></div></div><div class="fbot"><span>© 2025 Talenopia. All rights reserved.</span><a href="#">Privacy Policy</a></div></footer>
+</div>
+
+<!-- ══════════ CONTACT ══════════ -->
+<div class="page" id="page-contact">
+  <div style="background:var(--black);padding:68px 4% 48px;position:relative;overflow:hidden">
+    <div class="hero-gl"></div>
+    <div class="eyebrow" style="color:var(--red)">Get in Touch</div>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);color:var(--white);line-height:.93;margin-bottom:14px;position:relative;z-index:1">Get in Touch<br>with <span style="color:var(--red)">Talenopia</span></h1>
+    <div class="rbar" style="position:relative;z-index:1"></div>
+    <p style="font-size:.93rem;color:rgba(255,255,255,.42);max-width:540px;line-height:1.75;position:relative;z-index:1">Whether you're looking to scale your team, explore resource augmentation options, or discuss specific talent requirements—every conversation starts with understanding your business needs.</p>
+  </div>
+
+  <div class="ct-layout">
+    <div class="reveal">
+      <div class="eyebrow">Contact Information</div>
+      <h2 class="section-h" style="font-size:1.35rem">How Can We Help?</h2>
+      <div class="rbar"></div>
+      <div class="ct-info-items">
+        <div class="ct-item"><div class="ct-ico">✉</div><div class="ct-det"><label>Email</label><p>info@talenopia.com</p></div></div>
+        <div class="ct-item"><div class="ct-ico">🌐</div><div class="ct-det"><label>Website</label><p>www.talenopia.com</p></div></div>
+        <div class="ct-item"><div class="ct-ico">📬</div><div class="ct-det"><label>Careers</label><p>careers@talenopia.com</p></div></div>
+      </div>
+      <div class="stags">
+        <h4>You Can Reach Out For</h4>
+        <div class="tgroup">
+          <span class="ctag">IT Augmentation</span><span class="ctag">Non-IT Augmentation</span><span class="ctag">Specialized Talent</span><span class="ctag">Engagement Models</span><span class="ctag">Enterprise Staffing</span><span class="ctag">SMB Staffing</span><span class="ctag">General Inquiry</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal d1">
+      <div class="eyebrow">Send a Message</div>
+      <h2 class="section-h" style="font-size:1.3rem">Let's Start a Conversation</h2>
+      <div class="rbar"></div>
+      <form class="cform" onsubmit="submitForm(event)">
+        <div class="crow">
+          <div class="cf"><label>Full Name *</label><input type="text" placeholder="Your full name" required></div>
+          <div class="cf"><label>Company Name</label><input type="text" placeholder="Your company"></div>
+        </div>
+        <div class="crow">
+          <div class="cf"><label>Business Email *</label><input type="email" placeholder="you@company.com" required></div>
+          <div class="cf"><label>Phone Number</label><input type="tel" placeholder="+1 234 567 8900"></div>
+        </div>
+        <div class="cf">
+          <label>Requirement Type</label>
+          <select><option value="">Select a category</option><option>IT Staff Augmentation</option><option>Non-IT Staff Augmentation</option><option>Specialized Talent (AI/ML, Cloud, Security)</option><option>Engagement Model Discussion</option><option>General Inquiry</option></select>
+        </div>
+        <div class="cf"><label>Message *</label><textarea placeholder="Tell us about your requirements, team size, timeline, and specific technologies needed..." required></textarea></div>
+        <div><button type="submit" class="btn btn-black" style="padding:15px 34px">Submit Request <span class="arr"></span></button></div>
+        <div class="fok" id="fok">✓ Thank you! Your request has been received. Our team will respond within 1 business day.</div>
+      </form>
+    </div>
+  </div>
+
+  <div class="ctas reveal">
+    <h2>Our Team Responds with Clarity and Next Steps</h2>
+    <div class="ctas-btns"><a href="mailto:info@talenopia.com" class="btn btn-outline-w">info@talenopia.com</a></div>
+  </div>
+
+  <footer><div class="fg"><div class="fg-b"><a class="logo" href="#" onclick="go('home');return false;"><div class="logo-icon"><svg viewBox="0 0 100 100" fill="none"><polygon points="50,6 90,90 10,90" stroke="#fff" stroke-width="8" fill="none" stroke-linejoin="round"/><line x1="28" y1="65" x2="72" y2="65" stroke="#fff" stroke-width="8" stroke-linecap="square"/></svg></div><div class="logo-wordmark"><b style="color:#fff">TALENOPIA</b><small>Utopia of Talent Sourcing</small></div></a><p>Resource augmentation built for organizations that value agility, precision, and trust.</p></div><div class="fg-c"><h4>Navigation</h4><a href="#" onclick="go('home');return false;">Home</a><a href="#" onclick="go('about');return false;">About</a><a href="#" onclick="go('services');return false;">Services</a><a href="#" onclick="go('careers');return false;">Careers</a><a href="#" onclick="go('contact');return false;">Contact</a></div><div class="fg-c"><h4>Services</h4><a href="#" onclick="go('services');return false;">IT Augmentation</a><a href="#" onclick="go('services');return false;">Non-IT Augmentation</a><a href="#" onclick="go('services');return false;">Specialized Talent</a></div><div class="fg-c"><h4>Contact</h4><p>info@talenopia.com</p><p>careers@talenopia.com</p><p>www.talenopia.com</p></div></div><div class="fbot"><span>© 2025 Talenopia. All rights reserved.</span><a href="#">Privacy Policy</a></div></footer>
+</div>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function animR(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='50px';ring.style.height='50px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';ring.style.width='36px';ring.style.height='36px'});
+});
+// NAV
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>20));
+// PAGES
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.classList.remove('active');
+    if(a.textContent.trim().toLowerCase().replace(' ','')===id||
+       (id==='home'&&a.textContent.trim()==='Home')||
+       (id==='about'&&a.textContent.trim()==='About')||
+       (id==='services'&&a.textContent.trim()==='Services')||
+       (id==='careers'&&a.textContent.trim()==='Careers'))
+      a.classList.add('active');
+  });
+  window.scrollTo({top:0,behavior:'instant'});
+  closeMenu();
+  setTimeout(checkR,80);
+}
+// MENU
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+function closeMenu(){document.getElementById('navLinks').classList.remove('open')}
+// REVEAL
+function checkR(){
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>{
+    if(el.getBoundingClientRect().top<innerHeight-50)el.classList.add('in');
+  });
+}
+window.addEventListener('scroll',checkR,{passive:true});
+window.addEventListener('load',()=>setTimeout(checkR,100));
+// CONTACT TAGS
+document.querySelectorAll('.ctag').forEach(t=>t.addEventListener('click',()=>t.classList.toggle('on')));
+// FORM
+function submitForm(e){
+  e.preventDefault();
+  const ok=document.getElementById('fok');
+  ok.style.display='block';
+  e.target.reset();
+  setTimeout(()=>ok.style.display='none',7000);
+}
+setTimeout(checkR,200);
+</script>
+</body>
+</html>
