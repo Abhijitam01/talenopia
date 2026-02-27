@@ -1,646 +1,421 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Cloud, Cpu, Lock, Repeat, Zap } from "lucide-react";
-import { Marquee } from "@/components/ui/marquee";
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-const staggerContainer = {
-  visible: { transition: { staggerChildren: 0.1 } },
-};
 
 export default function Home() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); });
+      },
+      { rootMargin: "0px 0px -48px 0px", threshold: 0.08 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="bg-white">
-      {/* ───── HERO ───── */}
-      <section className="relative min-h-[calc(100vh-68px)] bg-[#0a0a0a] text-white overflow-hidden flex items-center">
-        {/* Background Elements */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none hero-noise" />
-        <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(200,16,46,0.18)_0%,transparent_70%)] pointer-events-none blur-3xl" />
-        <div className="absolute -bottom-[30%] left-[20%] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(200,16,46,0.07)_0%,transparent_70%)] pointer-events-none blur-3xl" />
+    <div>
 
-        <div className="container mx-auto px-[4%] grid md:grid-cols-2 gap-12 relative z-10 py-20">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="flex flex-col justify-center"
-          >
-            <motion.div variants={fadeInUp} className="flex items-center gap-3 mb-6">
-              <span className="w-6 h-[1.5px] bg-[#c8102e]" />
-              <span className="text-[0.63rem] font-bold tracking-[0.2em] uppercase text-[#c8102e]">
-                Leading Resource Augmentation Firm
-              </span>
-            </motion.div>
-
-            <motion.h1
-              variants={fadeInUp}
-              className="font-display text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.93] tracking-[0.02em] mb-7"
-            >
-              Enterprise<br />
-              Ready <span className="text-[#c8102e]">Talent.</span><br />
-              On Demand.
-            </motion.h1>
-
-            <motion.p
-              variants={fadeInUp}
-              className="text-[0.97rem] leading-[1.75] text-white/50 max-w-md mb-10"
-            >
-              Talenopia bridges skill gaps for global enterprises—providing access to a vetted pool of top-tier IT and non-IT professionals without long hiring cycles or hidden costs.
-            </motion.p>
-
-            <motion.div variants={fadeInUp} className="flex flex-wrap gap-4">
-              <Link
-                href="/contact"
-                className="bg-[#c8102e] text-white px-8 py-3.5 text-[0.75rem] font-bold tracking-[0.12em] uppercase hover:bg-[#a00d24] transition-all hover:-translate-y-0.5 shadow-lg shadow-red-900/20 inline-flex items-center gap-2 group"
-              >
-                Hire Talent
-                <span className="w-4 h-[1px] bg-white relative transition-all group-hover:w-6">
-                  <span className="absolute right-0 -top-[3px] border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent border-l-[5px] border-l-white" />
-                </span>
-              </Link>
-              <Link
-                href="/services"
-                className="border border-white/30 text-white px-8 py-3.5 text-[0.75rem] font-bold tracking-[0.12em] uppercase hover:bg-white/10 transition-all hover:-translate-y-0.5"
-              >
-                Explore Services
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="hidden md:grid grid-cols-2 gap-2.5 content-center"
-          >
-            {/* Hero Grid Items */}
-            <div className="bg-white/[0.04] border border-white/[0.07] p-6 hover:bg-white/[0.07] hover:border-[#c8102e]/30 transition-all duration-300 hover:-translate-y-1 group">
-              <div className="bg-[#c8102e]/20 text-[#c8102e] text-[0.6rem] font-bold tracking-widest uppercase inline-block px-2.5 py-1 mb-3">
-                Instant Access
-              </div>
-              <div className="text-white/80 font-semibold text-sm mb-2">Pre-Vetted Talent Pool</div>
-              <p className="text-white/40 text-xs leading-relaxed">
-                Developers, DevOps, AI/ML specialists, and cybersecurity experts ready to deploy immediately.
-              </p>
-            </div>
-
-            <div className="bg-white/[0.04] border border-white/[0.07] p-6 hover:bg-white/[0.07] hover:border-[#c8102e]/30 transition-all duration-300 hover:-translate-y-1">
-              <div className="font-display text-[2.8rem] text-[#c8102e] leading-none mb-1">
-                0%
-              </div>
-              <div className="text-[0.66rem] tracking-[0.12em] text-white/30 uppercase">
-                Hidden Costs
-              </div>
-            </div>
-
-            <div className="bg-white/[0.04] border border-white/[0.07] p-6 hover:bg-white/[0.07] hover:border-[#c8102e]/30 transition-all duration-300 hover:-translate-y-1">
-              <div className="font-display text-[2.8rem] text-white leading-none mb-1">
-                4<span className="text-white/25 text-2xl">+</span>
-              </div>
-              <div className="text-[0.66rem] tracking-[0.12em] text-white/30 uppercase">
-                Engagement Models
-              </div>
-            </div>
-
-            <div className="col-span-2 bg-white/[0.04] border border-white/[0.07] p-6 hover:bg-white/[0.07] hover:border-[#c8102e]/30 transition-all duration-300 hover:-translate-y-1">
-               <div className="bg-[#c8102e]/20 text-[#c8102e] text-[0.6rem] font-bold tracking-widest uppercase inline-block px-2.5 py-1 mb-3">
-                Why Talenopia?
-              </div>
-              <div className="text-white/80 font-semibold text-sm mb-2">Seamless Team Extension</div>
-              <p className="text-white/40 text-xs leading-relaxed">
-                Our professionals integrate with your workflow as genuine team members—not external vendors.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───── MARQUEE ───── */}
-      <Marquee />
-
-      {/* ───── INTRO ───── */}
-      <section className="py-24 px-[4%] bg-white">
-        <div className="grid lg:grid-cols-[5fr_7fr] gap-16 items-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-7 h-[1.5px] bg-[#c8102e]" />
-              <span className="text-[0.63rem] font-bold tracking-[0.22em] uppercase text-[#c8102e]">
-                Who We Are
-              </span>
-            </div>
-            <h2 className="font-serif text-[clamp(1.7rem,3.2vw,2.6rem)] leading-tight text-[#0a0a0a] mb-5">
-              Your Premier Partner in <em className="italic text-[#c8102e]">Resource Augmentation</em>
-            </h2>
-            <div className="w-10 h-[3px] bg-[#c8102e] mb-7" />
-            <p className="text-[0.93rem] leading-[1.78] text-[#555] max-w-lg mb-8">
-              Talenopia is a leading resource augmentation firm specializing in IT and non-IT staff augmentation. We bridge skill gaps for global enterprises by providing access to a vetted pool of top-tier professionals who integrate seamlessly with your workflow.
-            </p>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 bg-[#0a0a0a] text-white px-7 py-3 text-[0.75rem] font-bold tracking-[0.12em] uppercase hover:bg-[#c8102e] transition-all hover:-translate-y-0.5"
-            >
-              Learn More
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
-          </motion.div>
-
-          <motion.div
-             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-7 h-[1.5px] bg-[#c8102e]" />
-              <span className="text-[0.63rem] font-bold tracking-[0.22em] uppercase text-[#c8102e]">
-                What We Offer
-              </span>
-            </div>
-            <h2 className="font-serif text-[1.45rem] text-[#0a0a0a] mb-5">
-              Done Right — Every Time
-            </h2>
-            <div className="w-10 h-[3px] bg-[#c8102e] mb-7" />
-            <div className="grid gap-3">
-              {[
-                "Scale teams without long-term hiring commitments",
-                "Access niche expertise on demand — cloud, AI, DevOps",
-                "Maintain full control over scope, cost, and delivery",
-                "Resources evaluated for skills AND cultural alignment",
-                "Pay-as-you-go talent — no fixed bids",
-                "Transparent pricing — zero hidden charges"
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  variants={fadeInUp}
-                  className="flex items-start gap-3 py-2 border-b border-[#e0e0e0] text-[0.82rem] text-[#555]"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#c8102e] mt-1.5 shrink-0" />
-                  {item}
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* BENTO GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 mt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="md:col-span-4 border border-[#dedbd6] p-8 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-            <div className="inline-block bg-[#c8102e] text-white text-[0.6rem] font-bold tracking-[0.12em] uppercase px-2.5 py-1 mb-3">
-              Speed
-            </div>
-            <div className="font-display text-[3.8rem] leading-none text-[#0a0a0a] mb-1">
-              48<span className="text-[#c8102e]">h</span>
-            </div>
-            <div className="text-[0.66rem] tracking-[0.15em] uppercase text-[#888580]">
-              Time to First CVs
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="md:col-span-4 bg-[#0a0a0a] p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-            <div className="inline-block bg-[#c8102e]/20 text-[#c8102e] text-[0.6rem] font-bold tracking-[0.12em] uppercase px-2.5 py-1 mb-3">
-              Scale
-            </div>
-            <div className="font-display text-[3.8rem] leading-none text-white mb-1">
-              IT<span className="text-white/30 text-[1.8rem]">&</span>
-            </div>
-            <div className="text-[0.66rem] tracking-[0.15em] uppercase text-white/30">
-              Non-IT Coverage
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="md:col-span-4 border border-[#dedbd6] p-8 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-            <div className="inline-block bg-[#c8102e] text-white text-[0.6rem] font-bold tracking-[0.12em] uppercase px-2.5 py-1 mb-3">
-              Trust
-            </div>
-            <div className="font-display text-[3.8rem] leading-none text-[#0a0a0a] mb-1">
-              100<span className="text-[#c8102e]">%</span>
-            </div>
-            <div className="text-[0.66rem] tracking-[0.15em] uppercase text-[#888580]">
-              Pricing Transparency
-            </div>
-          </motion.div>
-
-          {/* LARGE BLOCKS */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="md:col-span-6 border border-[#dedbd6] p-8 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-            <div className="w-12 h-12 flex items-center justify-center bg-[#f2f1ef] text-xl mb-5 rounded-sm">☁️</div>
-            <h3 className="font-bold text-[0.97rem] mb-2 text-[#0a0a0a]">Cloud Engineering</h3>
-            <p className="text-[0.83rem] text-[#555] leading-relaxed mb-4">
-              Certified professionals across AWS, Azure, and GCP for cloud-native architecture, migration, and management at enterprise scale.
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {["AWS", "Azure", "GCP", "Cloud-Native", "IaC"].map((t) => (
-                <span key={t} className="text-[0.68rem] font-semibold px-2.5 py-1 bg-[#f2f1ef] border border-[#e0e0e0]">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="md:col-span-6 bg-[#0a0a0a] p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-            <div className="w-12 h-12 flex items-center justify-center bg-white/10 text-xl mb-5 rounded-sm">🤖</div>
-            <h3 className="font-bold text-[0.97rem] mb-2 text-white">AI / ML Engineers</h3>
-            <p className="text-[0.83rem] text-white/50 leading-relaxed mb-4">
-              Machine learning specialists and AI engineers ready for enterprise-grade deployments, innovation pipelines, and MLOps implementation.
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {["Deep Learning", "NLP", "MLOps", "PyTorch", "Data Science"].map((t) => (
-                <span key={t} className="text-[0.68rem] font-semibold px-2.5 py-1 bg-white/[0.06] text-white/60 border border-white/10 group-hover:border-[#c8102e] group-hover:bg-[#c8102e] group-hover:text-white transition-colors">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="md:col-span-3 bg-[#c8102e] p-8 hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden md:row-span-2 flex flex-col justify-center"
-          >
-            <div className="w-12 h-12 flex items-center justify-center bg-white/15 text-white text-xl mb-5 rounded-sm">⚡</div>
-            <h3 className="font-bold text-[0.97rem] mb-2 text-white">Faster Time-to-Market</h3>
-            <p className="text-[0.83rem] text-white/80 leading-relaxed">
-              Accelerate project timelines by quickly onboarding skilled professionals without long recruitment cycles or ramp-up delays.
-            </p>
-          </motion.div>
-
-           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="md:col-span-3 border border-[#dedbd6] p-8 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-             <div className="inline-block bg-[#c8102e] text-white text-[0.6rem] font-bold tracking-[0.12em] uppercase px-2.5 py-1 mb-3">
-              Flexible
-            </div>
-            <div className="font-display text-[3.8rem] leading-none text-[#0a0a0a] mb-1">
-              4<span className="text-[#c8102e]">+</span>
-            </div>
-            <div className="text-[0.66rem] tracking-[0.15em] uppercase text-[#888580]">
-              Engagement Models
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="md:col-span-6 border border-[#dedbd6] p-8 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-            <div className="w-12 h-12 flex items-center justify-center bg-[#f2f1ef] text-xl mb-5 rounded-sm">🔐</div>
-            <h3 className="font-bold text-[0.97rem] mb-2 text-[#0a0a0a]">Cybersecurity Professionals</h3>
-            <p className="text-[0.83rem] text-[#555] leading-relaxed mb-4">
-              Security analysts, architects, and compliance specialists to protect your digital environment and meet enterprise-grade security standards.
-            </p>
-             <div className="flex flex-wrap gap-1.5">
-              {["SOC Analysts", "Pen Testing", "Compliance", "Risk Mgmt"].map((t) => (
-                <span key={t} className="text-[0.68rem] font-semibold px-2.5 py-1 bg-[#f2f1ef] border border-[#e0e0e0]">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="md:col-span-3 border border-[#dedbd6] p-8 bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-             <div className="inline-block bg-[#c8102e] text-white text-[0.6rem] font-bold tracking-[0.12em] uppercase px-2.5 py-1 mb-3">
-              Savings
-            </div>
-            <div className="font-display text-[1.8rem] leading-none text-[#0a0a0a] mb-1">
-              ZERO
-            </div>
-            <div className="text-[0.64rem] tracking-[0.1em] uppercase text-[#888580]">
-              Overhead on Hiring
-            </div>
-            <div className="mt-2 text-[0.76rem] text-[#555]">
-              Reduce recruitment, training, and benefits costs.
-            </div>
-          </motion.div>
-
-           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="md:col-span-4 bg-[#f2f1ef] p-8 relative group overflow-hidden"
-          >
-             <div className="w-12 h-12 flex items-center justify-center bg-white text-xl mb-5 rounded-sm">🔄</div>
-             <h3 className="font-bold text-[0.97rem] mb-2 text-[#0a0a0a]">DevOps & Cloud-Native</h3>
-             <p className="text-[0.83rem] text-[#555] leading-relaxed">
-               CI/CD, containerization, IaC, and modern delivery practices for high-velocity engineering teams.
-             </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="md:col-span-8 bg-[#0a0a0a] p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-0 h-[3px] bg-[#c8102e] transition-all duration-500 group-hover:w-full" />
-            <div className="bg-[#c8102e]/20 text-[#c8102e] text-[0.6rem] font-bold tracking-[0.12em] uppercase px-2.5 py-1 mb-3 inline-block">
-              Non-IT Augmentation
-            </div>
-            <h3 className="font-bold text-[0.97rem] mb-2 text-white">Beyond Technology Roles</h3>
-            <p className="text-[0.83rem] text-white/45 leading-relaxed mb-4">
-              Talenopia supports organizations with non-IT resource augmentation—operations, compliance, marketing, and business functions—ensuring holistic scaling under a single engagement model.
-            </p>
-             <div className="flex flex-wrap gap-1.5">
-              {["Operations", "Marketing", "Compliance", "Business Support", "Governance"].map((t) => (
-                <span key={t} className="text-[0.68rem] font-semibold px-2.5 py-1 bg-white/[0.06] text-white/60 border border-white/10 group-hover:border-[#c8102e] group-hover:bg-[#c8102e] group-hover:text-white transition-colors">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───── PROCESS ───── */}
-      <section className="bg-[#0a0a0a] py-24 px-[4%]">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeInUp}
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-7 h-[1.5px] bg-[#c8102e]" />
-            <span className="text-[0.63rem] font-bold tracking-[0.22em] uppercase text-[#c8102e]">
-              How It Works
-            </span>
-          </div>
-          <h2 className="font-serif text-[2.6rem] text-white mb-5">
-            A Simple, <em className="italic text-[#c8102e]">Enterprise-Friendly</em> Process
-          </h2>
-          <div className="w-10 h-[3px] bg-[#c8102e] mb-12" />
-        </motion.div>
-
-        <div className="grid md:grid-cols-4 border border-white/[0.06]">
-          {[
-            {
-              step: "01",
-              title: "Requirement Discussion",
-              desc: "Understand your project needs, timelines, skill expectations, and cultural requirements before anything else."
-            },
-            {
-              step: "02",
-              title: "Resource Shortlisting",
-              desc: "Share CVs of pre-vetted professionals—curated specifically for your requirements, not generic profiles."
-            },
-            {
-              step: "03",
-              title: "Interview & Selection",
-              desc: "You evaluate and select the right talent. Full control over who joins your team and when."
-            },
-            {
-              step: "04",
-              title: "Onboarding & Integration",
-              desc: "Smooth induction into your workflow with minimal disruption to ongoing operations."
+      {/* ════════════════════════════════════════
+          HERO
+      ════════════════════════════════════════ */}
+      <section className="relative min-h-[100vh] grid lg:grid-cols-[1.3fr_1fr] pt-[64px] overflow-hidden hero-section bg-[#F4F2EE]">
+        <style dangerouslySetInnerHTML={{__html: `
+          .hero-section::before {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 65%; height: 100%;
+            background: #C01C1C;
+            clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
+            z-index: 0;
+          }
+          .hero-section::after {
+            content: '';
+            position: absolute; top: 120px; right: 60px;
+            width: 220px; height: 160px;
+            background-image: radial-gradient(circle, #C01C1C 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+            opacity: 0.25;
+            z-index: 1;
+          }
+          @media (max-width: 1024px) {
+            .hero-section::before {
+               width: 100%; clip-path: polygon(0 0,100% 0,100% 45%,0 55%);
             }
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-10 border-r border-white/[0.06] last:border-r-0 hover:bg-[#c8102e]/[0.04] transition-colors relative group"
-            >
-              <span className="block font-display text-[4.5rem] leading-none text-white/[0.04] mb-[-14px]">
-                {item.step}
-              </span>
-              <h3 className="text-[0.88rem] font-bold text-white mb-2">{item.title}</h3>
-              <p className="text-[0.78rem] text-white/35 leading-relaxed">{item.desc}</p>
-              
-              {/* Connector */}
-              {i < 3 && (
-                <div className="hidden md:flex absolute top-10 -right-3 w-6 h-6 border-[1.5px] border-[#c8102e]/40 rounded-full bg-[#0a0a0a] items-center justify-center text-[#c8102e] text-[0.65rem] z-10">
-                  →
-                </div>
-              )}
-            </motion.div>
+          }
+          .hero-card {
+            animation: slideUp .8s cubic-bezier(.16,1,.3,1) both;
+          }
+          .hero-heading {
+            animation: slideUp .8s .1s cubic-bezier(.16,1,.3,1) both;
+          }
+          .hero-body {
+            animation: slideUp .8s .2s cubic-bezier(.16,1,.3,1) both;
+          }
+          .hero-actions {
+            animation: slideUp .8s .3s cubic-bezier(.16,1,.3,1) both;
+          }
+          .stat-card {
+            animation: slideUp .8s cubic-bezier(.16,1,.3,1) both;
+          }
+          .stat-card:nth-child(1) { animation-delay: .15s; border-left-color: #C01C1C; }
+          .stat-card:nth-child(2) { animation-delay: .25s; border-left-color: #ddd; }
+          .stat-card:nth-child(3) { animation-delay: .35s; border-left-color: #ddd; }
+          .stat-card:nth-child(4) { animation-delay: .45s; }
+          @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes bounce {
+            0%,100%{ transform: translateX(-50%) translateY(0); }
+            50%    { transform: translateX(-50%) translateY(8px); }
+          }
+        `}} />
+
+        {/* Left Main Card */}
+        <div className="relative z-[2] flex items-center px-[24px] lg:px-[64px] py-[100px] lg:py-[80px]">
+          <div className="w-full max-w-[650px] hero-card mx-auto lg:ml-0 lg:mr-auto pl-0 lg:pl-[40px]">
+            <div className="flex items-center gap-[12px] text-[11px] font-[600] tracking-[2px] uppercase text-white mb-[28px] before:content-[''] before:block before:w-[28px] before:h-[2px] before:bg-white">
+              Resource Augmentation Specialists
+            </div>
+
+            <h1 className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[clamp(48px,5vw,72px)] leading-[1.0] tracking-[-1px] text-white hero-heading mb-0">
+              Enterprise-Ready<br/>Talent.<br/>
+              <span className="text-[#111]">Deployed When<br/>You Need It.</span>
+            </h1>
+
+            <div className="w-[36px] h-[3px] bg-white my-[28px]" />
+
+            <p className="text-[16px] leading-[1.75] text-white/90 mb-[36px] hero-body font-[family-name:var(--font-barlow)]">
+              Talenopia helps enterprises and growing businesses scale with hyper-specialized IT and non-IT professionals — without long hiring cycles, hidden costs, or rigid contracts.
+            </p>
+
+            <div className="flex gap-[16px] flex-wrap hero-actions">
+              <Link href="/contact" className="bg-[#111] text-white py-[14px] px-[32px] font-[family-name:var(--font-barlow-condensed)] font-[700] text-[14px] tracking-[2px] uppercase rounded-[2px] transition-all hover:bg-black hover:-translate-y-[2px]">
+                Hire Talent
+              </Link>
+              <Link href="/contact" className="bg-transparent text-white py-[14px] px-[32px] font-[family-name:var(--font-barlow-condensed)] font-[700] text-[14px] tracking-[2px] uppercase border-[2px] border-white rounded-[2px] transition-all hover:bg-white hover:text-[#C01C1C] hover:-translate-y-[2px]">
+                Talk to an Expert
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Stats Cards */}
+        <div className="relative z-[2] flex flex-row flex-wrap lg:flex-col justify-center gap-[12px] lg:gap-[16px] p-[24px] lg:py-[80px] lg:pr-[48px] lg:pl-[80px] max-w-[500px] mx-auto lg:mx-0 w-full">
+          <div className="bg-white py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
+            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-[#8a8a8a] mb-[8px]">Clients Served</div>
+            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[40px] text-[#C01C1C] leading-[1]">
+              <Counter target={500} suffix="+" />
+            </div>
+          </div>
+          
+          <div className="bg-white py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
+            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-[#8a8a8a] mb-[8px]">Talent Coverage</div>
+            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[28px] pt-[6px] text-[#C01C1C] leading-[1]">IT & Non-IT</div>
+          </div>
+
+          <div className="bg-white py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
+            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-[#8a8a8a] mb-[8px]">Engagement Models</div>
+            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[40px] text-[#C01C1C] leading-[1]">4+</div>
+          </div>
+
+          <div className="bg-[#C01C1C] py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
+            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-white/70 mb-[8px]">Hidden Costs</div>
+            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[40px] text-white leading-[1]">0%</div>
+          </div>
+        </div>
+
+        {/* Scroll Hint */}
+        <div className="absolute bottom-[32px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-[8px] z-10 animate-[bounce_2s_infinite]">
+          <span className="text-[10px] tracking-[2px] uppercase text-[#8a8a8a]">Scroll</span>
+          <div className="w-[18px] h-[18px] border-r-[2px] border-b-[2px] border-[#C01C1C] rotate-45" />
+        </div>
+      </section>
+
+      {/* Thin section separator */}
+      <div style={{ height: 1, background: "var(--gray-mid)" }} />
+
+      {/* ════════════════════════════════════════
+          WHO WE ARE  (intro)
+      ════════════════════════════════════════ */}
+      <section style={{ padding: "88px 5%", background: "var(--off-white)" }}>
+        <div className="intro-inner">
+          <div className="reveal">
+            <span className="section-rule" />
+            <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--red)", marginBottom: 14 }}>
+              Who We Are
+            </div>
+            <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)", fontWeight: 800, lineHeight: 1.18, color: "var(--text)", marginBottom: 28 }}>
+              Your Partner in Modern{" "}
+              <br />Resource Augmentation
+            </h2>
+            <p style={{ fontSize: "0.92rem", lineHeight: 1.78, color: "var(--text-light)", marginBottom: 14, maxWidth: 560 }}>
+              Talenopia is a resource augmentation firm built for organizations that
+              value agility, precision, and trust. We enable enterprises and SMBs to
+              extend their teams with skilled professionals who integrate seamlessly.
+            </p>
+            <p style={{ fontSize: "0.92rem", lineHeight: 1.78, color: "var(--text-light)", marginBottom: 32, maxWidth: 560 }}>
+              From IT specialists to non-IT professionals — ready-to-deploy resources
+              aligned to your technical, cultural, and compliance requirements.
+            </p>
+            <Link href="/about" className="btn btn-outline-dark">About Us →</Link>
+          </div>
+
+          {/* Two overlapping info boxes */}
+          <div className="reveal reveal-delay-1" style={{ position: "relative", height: 320 }}>
+            <div style={{
+              position: "absolute", top: 0, left: 0, right: 56,
+              padding: "28px 30px",
+              background: "var(--black)", color: "var(--white)",
+              borderLeft: "2px solid var(--red)",
+            }}>
+              <div style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--red)", marginBottom: 10 }}>What We Offer</div>
+              <p style={{ fontSize: "0.88rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)" }}>
+                Flexible access to vetted professionals across technical and functional
+                roles — scaling teams without long-term commitments.
+              </p>
+            </div>
+            <div style={{
+              position: "absolute", bottom: 0, right: 0, left: 56,
+              padding: "28px 30px",
+              background: "var(--black-mid)", color: "var(--white)",
+              borderLeft: "2px solid rgba(255,255,255,0.12)",
+              borderTop: "none",
+            }}>
+              <div style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 10 }}>Our Advantage</div>
+              <p style={{ fontSize: "0.88rem", lineHeight: 1.65, color: "rgba(255,255,255,0.5)" }}>
+                Maintain full control over scope, cost, and delivery — whether you need
+                a single expert or a dedicated team.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Thin section separator */}
+      <div style={{ height: 1, background: "var(--gray-mid)" }} />
+
+      {/* ════════════════════════════════════════
+          CORE SPECIALIZATION CARDS
+      ════════════════════════════════════════ */}
+      <section style={{ padding: "88px 5%", background: "var(--white)" }}>
+        <div className="reveal" style={{ maxWidth: 640, marginBottom: 52 }}>
+          <span className="section-rule" />
+          <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--red)", marginBottom: 14 }}>
+            Core Specialization
+          </div>
+          <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)", fontWeight: 800, lineHeight: 1.18, color: "var(--text)" }}>
+            Hyper-Specialized Talent Pools
+          </h2>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))",
+          gap: 1,
+          background: "var(--gray-mid)",
+          border: "1px solid var(--gray-mid)",
+        }}>
+          {[
+            { title: "AI / ML Engineers", desc: "Machine learning specialists and AI engineers for enterprise-grade deployments and innovation pipelines." },
+            { title: "Cloud Engineers", desc: "Certified professionals across AWS, Azure, and GCP to architect, migrate, and manage cloud environments." },
+            { title: "DevOps & Cloud-Native", desc: "CI/CD, containerization, infrastructure-as-code, and modern delivery specialists." },
+            { title: "Cybersecurity Professionals", desc: "Security analysts, architects, and compliance specialists to protect your digital environment." },
+            { title: "Software Engineers", desc: "Full-stack, backend, and frontend engineers who contribute immediately across your tech stack." },
+            { title: "Non-IT Resources", desc: "Operations, compliance, and business function professionals to strengthen your support fabric." },
+          ].map((card, i) => (
+            <SpecCard key={i} title={card.title} desc={card.desc} delay={i % 3} />
           ))}
         </div>
       </section>
 
-      {/* ───── WHY SECTION ───── */}
-      <section className="bg-[#f8f7f5] py-24 px-[4%]">
-        <div className="grid lg:grid-cols-[5fr_7fr] gap-20 items-center">
-          <motion.div
-             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-7 h-[1.5px] bg-[#c8102e]" />
-              <span className="text-[0.63rem] font-bold tracking-[0.22em] uppercase text-[#c8102e]">
-                Why Choose Us
-              </span>
+      {/* ════════════════════════════════════════
+          PROCESS  (dark background with layered tone)
+      ════════════════════════════════════════ */}
+      <section className="reveal" style={{ padding: "88px 5%", background: "var(--black-mid)" }}>
+        <span className="section-rule" style={{ display: "block" }} />
+        <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--red)", marginBottom: 14 }}>
+          How It Works
+        </div>
+        <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)", fontWeight: 800, lineHeight: 1.18, color: "var(--white)", marginBottom: 64 }}>
+          A Simple, Enterprise-Friendly Process
+        </h2>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          borderLeft: "1px solid var(--black-soft)",
+        }}>
+          {[
+            { num: "01", title: "Requirement Alignment", desc: "We understand your goals, timelines, and skill expectations before anything else." },
+            { num: "02", title: "Talent Shortlisting", desc: "Receive curated profiles from our pre-vetted talent pool — no generic resumes." },
+            { num: "03", title: "Interview & Selection", desc: "You interview and select resources that fit your team dynamics and culture." },
+            { num: "04", title: "Onboarding & Integration", desc: "Smooth onboarding with minimal disruption to your existing workflow." },
+          ].map((step, i) => (
+            <ProcessStep key={i} num={step.num} title={step.title} desc={step.desc} />
+          ))}
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          WHY TALENOPIA
+      ════════════════════════════════════════ */}
+      <section style={{ padding: "88px 5%", background: "var(--gray)" }}>
+        <div className="why-inner">
+          <div className="reveal">
+            <span className="section-rule" />
+            <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--red)", marginBottom: 14 }}>
+              Why Talenopia
             </div>
-            <h2 className="font-serif text-[2.6rem] text-[#0a0a0a] mb-5">
-              Built for <em className="italic text-[#c8102e]">Long-Term</em> Partnerships
+            <h2 style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)", fontWeight: 800, lineHeight: 1.18, color: "var(--text)", marginBottom: 20 }}>
+              Built for Long-Term Partnerships
             </h2>
-            <div className="w-10 h-[3px] bg-[#c8102e] mb-7" />
-            <p className="text-[0.93rem] leading-[1.78] text-[#555] max-w-lg mb-8">
-              Organizations choose Talenopia because we focus on reliability, clarity, and outcomes. We don't just provide resources—we build partnerships that scale with your business goals.
+            <p style={{ fontSize: "0.92rem", lineHeight: 1.78, color: "var(--text-light)", maxWidth: 480 }}>
+              Organizations choose Talenopia because we focus on reliability, clarity,
+              and outcomes. We don&apos;t just provide resources — we build partnerships
+              designed to last.
             </p>
-             <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-[#0a0a0a] text-white px-7 py-3 text-[0.75rem] font-bold tracking-[0.12em] uppercase hover:bg-[#c8102e] transition-all hover:-translate-y-0.5"
-            >
-              Talk to an Expert
-            </Link>
-          </motion.div>
-          
-          <motion.div
-             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="flex flex-col gap-[1px] mt-6"
-          >
+          </div>
+
+          <div className="reveal reveal-delay-1" style={{ display: "flex", flexDirection: "column", gap: 1, background: "var(--gray-mid)" }}>
             {[
-              { icon: "⚡", title: "Reduce Hiring Time", text: "Access pre-vetted experts instantly—no weeks of recruitment overhead or long processes." },
-              { icon: "◎", title: "Control Costs", text: "Scale up or down as needed—pay only for what you use, with full transparency." },
-              { icon: "⟳", title: "Seamless Integration", text: "Our professionals work as genuine members of your team, not as external vendors." },
-              { icon: "★", title: "Domain Expertise", text: "Skilled across Cloud, DevOps, Data, AI/ML, Cybersecurity, Blockchain, and more." },
-              { icon: "✓", title: "Cultural & Compliance Fit", text: "Every resource aligned to your environment, values, and enterprise-grade standards." },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                variants={fadeInUp}
-                className="flex items-start gap-4 p-5 bg-white border border-[#dedbd6] hover:border-black hover:bg-[#f2f1ef] transition-colors group"
-              >
-                <div className="w-9 h-9 shrink-0 flex items-center justify-center bg-[#0a0a0a] text-[#c8102e] text-[0.95rem] group-hover:bg-[#c8102e] group-hover:text-white transition-colors">
-                  {item.icon}
-                </div>
-                <div>
-                  <h4 className="text-[0.83rem] font-bold text-[#0a0a0a] mb-1">{item.title}</h4>
-                  <p className="text-[0.78rem] text-[#555] leading-relaxed">{item.text}</p>
-                </div>
-              </motion.div>
+              { title: "Quick Onboarding", text: "Without compromising quality or cultural alignment." },
+              { title: "Cultural & Compliance Fit", text: "Every resource aligned to your standards and environment." },
+              { title: "Enterprise-Grade Standards", text: "Rigorous evaluation beyond just technical skills." },
+              { title: "Transparent Pricing", text: "No hidden charges. No unnecessary complexity." },
+              { title: "Relationship-Driven Model", text: "Long-term value built on performance and mutual respect." },
+            ].map((point, i) => (
+              <WhyPoint key={i} title={point.title} text={point.text} idx={i + 1} />
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ───── AUGMENTATION EXPLAINED ───── */}
-      <section className="bg-[#0a0a0a] py-24 px-[4%]">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          <motion.div
-             initial="hidden"
-             whileInView="visible"
-             viewport={{ once: true }}
-             variants={fadeInUp}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-7 h-[1.5px] bg-[#c8102e]" />
-              <span className="text-[0.63rem] font-bold tracking-[0.22em] uppercase text-[#c8102e]">
-                Resource Augmentation Explained
-              </span>
-            </div>
-            <h2 className="font-serif text-[2.6rem] text-white mb-5">
-              Flexible, Scalable, <em className="italic text-[#c8102e]">and Skilled</em>
-            </h2>
-            <div className="w-10 h-[3px] bg-[#c8102e] mb-7" />
-            <p className="text-[0.93rem] leading-[1.78] text-white/55 max-w-lg mb-10">
-              Resource Augmentation lets you extend your team with expert professionals—without the long hiring cycles or overheads. Whether you need one engineer or an entire team, Talenopia provides ready-to-deploy talent that integrates seamlessly with your workflow.
-            </p>
-             <Link
-              href="/services"
-              className="border border-white/30 text-white px-7 py-3 text-[0.75rem] font-bold tracking-[0.12em] uppercase hover:bg-white/10 transition-all hover:-translate-y-0.5 inline-flex items-center gap-2"
-            >
-              View All Services
-              <span className="w-4 h-[1px] bg-white relative">
-                 <span className="absolute right-0 -top-[3px] border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent border-l-[5px] border-l-white" />
-              </span>
-            </Link>
-          </motion.div>
-
-          <motion.div
-             initial="hidden"
-             whileInView="visible"
-             viewport={{ once: true }}
-             variants={staggerContainer}
-             className="grid grid-cols-2 gap-2.5"
-          >
-             <motion.div variants={fadeInUp} className="col-span-2 p-7 border border-[#c8102e]/20 bg-[#c8102e]/10 hover:bg-white/[0.06] hover:border-white/10 transition-all">
-                <div className="text-[1.4rem] mb-3">🔄</div>
-                <h4 className="text-[0.83rem] font-bold text-white mb-1.5">Flexibility & Scalability</h4>
-                <p className="text-[0.76rem] text-white/40 leading-relaxed">
-                  Easily scale your team up or down based on project needs—without long-term commitments or fixed headcount pressure.
-                </p>
-             </motion.div>
-             
-             <motion.div variants={fadeInUp} className="p-7 border border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/10 transition-all">
-                <div className="text-[1.4rem] mb-3">💰</div>
-                <h4 className="text-[0.83rem] font-bold text-white mb-1.5">Cost Efficiency</h4>
-                <p className="text-[0.76rem] text-white/40 leading-relaxed">
-                  Reduce overhead like recruitment, training, and benefits.
-                </p>
-             </motion.div>
-
-             <motion.div variants={fadeInUp} className="p-7 border border-white/[0.07] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/10 transition-all">
-                <div className="text-[1.4rem] mb-3">🚀</div>
-                <h4 className="text-[0.83rem] font-bold text-white mb-1.5">Faster Time-to-Market</h4>
-                <p className="text-[0.76rem] text-white/40 leading-relaxed">
-                  Accelerate project timelines by quickly onboarding skilled pros.
-                </p>
-             </motion.div>
-          </motion.div>
+      {/* ════════════════════════════════════════
+          CTA STRIP  (pre-footer red background)
+      ════════════════════════════════════════ */}
+      <div className="reveal" style={{ background: "var(--red)", padding: "100px 5%" }}>
+        <div style={{ maxWidth: 640 }}>
+          <span className="section-rule" style={{ background: "var(--white)" }} />
+          <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)", fontWeight: 800, color: "var(--white)", marginBottom: 16, lineHeight: 1.2 }}>
+            Ready to Build Your Team with Confidence?
+          </h2>
+          <p style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.5)", marginBottom: 36, maxWidth: 480, lineHeight: 1.7 }}>
+            Whether you&apos;re expanding rapidly or filling critical skill gaps, Talenopia
+            delivers the talent you need — without friction.
+          </p>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
+            <Link href="/contact" className="btn btn-dark">Get in Touch</Link>
+            <Link href="/services" className="btn btn-outline" style={{ background: "transparent", borderColor: "rgba(255,255,255,0.4)" }}>View Services</Link>
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* ───── CTA STRIP ───── */}
-      <div className="bg-[#c8102e] py-20 px-[4%] flex flex-wrap items-center justify-between gap-10">
-        <motion.h2
-           initial={{ opacity: 0, x: -20 }}
-           whileInView={{ opacity: 1, x: 0 }}
-           viewport={{ once: true }}
-           className="font-display text-[clamp(2rem,4vw,3rem)] text-white leading-tight max-w-xl"
-        >
-          Ready to Build Your Team with Confidence?
-        </motion.h2>
-        <motion.div
-           initial={{ opacity: 0, x: 20 }}
-           whileInView={{ opacity: 1, x: 0 }}
-           viewport={{ once: true }}
-           className="flex gap-3 flex-wrap"
-        >
-          <Link
-            href="/contact"
-            className="border border-white text-white px-7 py-3 text-[0.75rem] font-bold tracking-[0.12em] uppercase hover:bg-white/10 transition-all"
-          >
-            Hire Talent
-          </Link>
-          <Link
-            href="/contact"
-            className="bg-white text-[#c8102e] px-7 py-3 text-[0.75rem] font-bold tracking-[0.12em] uppercase hover:bg-gray-100 transition-all inline-flex items-center gap-2"
-          >
-            Contact Us
-             <span className="w-4 h-[1px] bg-[#c8102e] relative">
-                 <span className="absolute right-0 -top-[3px] border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent border-l-[5px] border-l-[#c8102e]" />
-              </span>
-          </Link>
-        </motion.div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────
+   SUB-COMPONENTS
+───────────────────────────────────────────────── */
+
+function SpecCard({ title, desc, delay }: { title: string; desc: string; delay: number }) {
+  const delayClass = delay === 1 ? "reveal-delay-1" : delay === 2 ? "reveal-delay-2" : "";
+  return (
+    <div className={`reveal ${delayClass}`}
+      style={{
+        padding: "44px 32px",
+        background: "var(--white)",
+        borderLeft: "2px solid transparent",
+        cursor: "default",
+        transition: "border-color var(--transition), background var(--transition)",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.borderLeftColor = "var(--red)";
+        el.style.background = "var(--off-white)";
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.borderLeftColor = "transparent";
+        el.style.background = "var(--white)";
+      }}
+    >
+      <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--text)", marginBottom: 14 }}>{title}</h3>
+      <p style={{ fontSize: "0.95rem", color: "var(--text-light)", lineHeight: 1.65 }}>{desc}</p>
+    </div>
+  );
+}
+
+function ProcessStep({ num, title, desc }: { num: string; title: string; desc: string }) {
+  return (
+    <div style={{
+      padding: "44px 32px",
+      borderRight: "1px solid var(--black-soft)",
+      transition: "background var(--transition)",
+      cursor: "default",
+    }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = "rgba(255,255,255,0.03)"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = ""; }}
+    >
+      <div style={{ fontSize: "3.2rem", fontWeight: 800, lineHeight: 1, color: "var(--red)", marginBottom: 20, opacity: 0.9 }}>{num}</div>
+      <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--white)", marginBottom: 10 }}>{title}</h3>
+      <p style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.65 }}>{desc}</p>
+    </div>
+  );
+}
+
+function WhyPoint({ title, text, idx }: { title: string; text: string; idx: number }) {
+  return (
+    <div style={{
+      display: "flex", gap: 16, alignItems: "flex-start",
+      padding: "18px 20px",
+      background: "var(--white)",
+      transition: "background var(--transition)",
+      cursor: "default",
+    }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = "var(--off-white)"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = "var(--white)"; }}
+    >
+      <div style={{ width: 24, height: 24, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <span style={{ fontSize: "0.62rem", fontWeight: 800, color: "var(--red)", letterSpacing: "0.05em" }}>0{idx}</span>
+      </div>
+      <div>
+        <h4 style={{ fontSize: "0.83rem", fontWeight: 700, color: "var(--text)", marginBottom: 3 }}>{title}</h4>
+        <p style={{ fontSize: "0.78rem", color: "var(--text-light)", lineHeight: 1.55 }}>{text}</p>
       </div>
     </div>
   );
+}
+
+function Counter({ target, suffix = "" }: { target: number, suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        let c = 0;
+        const step = target / 60;
+        const tick = () => {
+          c = Math.min(c + step, target);
+          setCount(Math.floor(c));
+          if (c < target) requestAnimationFrame(tick);
+        };
+        tick();
+        obs.unobserve(el);
+      });
+    });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
 }

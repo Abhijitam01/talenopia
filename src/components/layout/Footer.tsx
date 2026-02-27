@@ -1,94 +1,98 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 export function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer className="bg-[#0d0d0d] pt-16 pb-7 px-[5%] border-t border-white/[0.05]">
-      <div className="grid grid-cols-1 lg:grid-cols-[2.5fr_1fr_1fr_1.5fr] gap-12 mb-12">
-        {/* Brand Column */}
+    <footer style={{ background: "var(--black)", borderTop: "1px solid var(--black-soft)" }}>
+      {/* Top grid */}
+      <div className="footer-grid" style={{ padding: "56px 5% 48px" }}>
+
+        {/* Brand */}
         <div>
-          <Link href="/" className="flex items-center gap-2.5 group mb-6">
-            <div className="w-9 h-9 flex-shrink-0">
-              <svg viewBox="0 0 100 100" fill="none" className="w-full h-full">
-                <polygon
-                  points="50,6 90,90 10,90"
-                  stroke="#fff"
-                  strokeWidth="8"
-                  fill="none"
-                  strokeLinejoin="round"
-                />
-                <line
-                  x1="28"
-                  y1="65"
-                  x2="72"
-                  y2="65"
-                  stroke="#fff"
-                  strokeWidth="8"
-                  strokeLinecap="square"
-                />
-              </svg>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-display text-[1.4rem] tracking-[0.06em] text-white">
-                TALENOPIA
-              </span>
-              <small className="text-[0.38rem] font-bold tracking-[0.28em] text-white/50 uppercase mt-[2px]">
-                Utopia of Talent Sourcing
-              </small>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", marginBottom: 18 }}>
+            <svg viewBox="0 0 100 100" fill="none" width={30} height={30}>
+              <polygon points="50,8 85,88 15,88" fill="none" stroke="#C01C1C" strokeWidth="9" strokeLinejoin="round" />
+              <line x1="30" y1="63" x2="70" y2="63" stroke="#C01C1C" strokeWidth="9" strokeLinecap="square" />
+            </svg>
+            <div style={{ display: "flex", flexDirection: "column", gap: 3, lineHeight: 1 }}>
+              <span style={{ fontSize: "1rem", fontWeight: 800, letterSpacing: "0.06em", color: "var(--white)" }}>TALENOPIA</span>
+              <span style={{ fontSize: "0.36rem", fontWeight: 600, letterSpacing: "0.22em", color: "var(--red)", textTransform: "uppercase" }}>Utopia of Talent Sourcing</span>
             </div>
           </Link>
-          <p className="text-[0.8rem] text-white/35 leading-[1.72] max-w-[260px]">
-             A resource augmentation company built for organizations that value agility, precision, and trust.
+          <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.38)", lineHeight: 1.7, maxWidth: 240 }}>
+            A resource augmentation firm built for organizations that value agility, precision, and trust.
           </p>
         </div>
 
         {/* Navigation */}
-        <div className="flex flex-col gap-2">
-          <h4 className="text-[0.58rem] font-bold tracking-[0.22em] uppercase text-white/30 mb-4">Navigation</h4>
-          <Link href="/" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">Home</Link>
-          <Link href="/about" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">About Us</Link>
-          <Link href="/services" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">Services</Link>
-          <Link href="/careers" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">Careers</Link>
-          <Link href="/contact" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">Contact</Link>
+        <div>
+          <div style={{ fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 18, paddingBottom: 10, borderBottom: "1px solid var(--black-soft)" }}>
+            Navigation
+          </div>
+          {[
+            { href: "/", label: "Home" }, { href: "/about", label: "About" },
+            { href: "/services", label: "Services" }, { href: "/careers", label: "Careers" },
+            { href: "/contact", label: "Contact" },
+          ].map((link) => (
+            <FooterLink key={link.href} href={link.href} label={link.label} />
+          ))}
         </div>
 
         {/* Services */}
-        <div className="flex flex-col gap-2">
-          <h4 className="text-[0.58rem] font-bold tracking-[0.22em] uppercase text-white/30 mb-4">Services</h4>
-          <Link href="/services" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">IT Augmentation</Link>
-          <Link href="/services" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">Non-IT Augmentation</Link>
-          <Link href="/services" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">Specialized Talent</Link>
-          <Link href="/services" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors w-fit">Engagement Models</Link>
+        <div>
+          <div style={{ fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 18, paddingBottom: 10, borderBottom: "1px solid var(--black-soft)" }}>
+            Services
+          </div>
+          {["IT Augmentation", "Non-IT Augmentation", "Specialized Talent", "Engagement Models"].map((svc) => (
+            <FooterLink key={svc} href="/services" label={svc} />
+          ))}
         </div>
 
         {/* Contact */}
         <div>
-           <h4 className="text-[0.58rem] font-bold tracking-[0.22em] uppercase text-white/30 mb-4">Contact</h4>
-           <div className="flex flex-col gap-2.5">
-             <a href="mailto:info@talenopia.com" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors">info@talenopia.com</a>
-             <a href="mailto:careers@talenopia.com" className="text-[0.8rem] text-white/45 hover:text-[#c8102e] transition-colors">careers@talenopia.com</a>
-             <div className="mt-2 text-[0.8rem] text-white/45">www.talenopia.com</div>
-           </div>
+          <div style={{ fontSize: "0.58rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 18, paddingBottom: 10, borderBottom: "1px solid var(--black-soft)" }}>
+            Contact
+          </div>
+          {[
+            { label: "info@talenopia.com", href: "mailto:info@talenopia.com" },
+            { label: "careers@talenopia.com", href: "mailto:careers@talenopia.com" },
+            { label: "www.talenopia.com", href: "#" },
+          ].map((item) => (
+            <FooterLink key={item.label} href={item.href} label={item.label} />
+          ))}
         </div>
       </div>
 
-      <div className="border-t border-white/[0.06] pt-6 flex flex-wrap justify-between items-center gap-4">
-        <span className="text-[0.68rem] text-white/20 tracking-[0.05em]">
+      {/* Bottom bar */}
+      <div style={{ borderTop: "1px solid var(--black-soft)", padding: "18px 5%", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+        <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.22)", letterSpacing: "0.04em" }}>
           © {new Date().getFullYear()} Talenopia. All rights reserved.
         </span>
-        <div className="flex items-center gap-6">
-          <Link href="#" className="text-[0.68rem] text-white/20 hover:text-[#c8102e] transition-colors">Privacy Policy</Link>
-          <button onClick={scrollToTop} className="text-[0.68rem] text-[#c8102e] font-bold uppercase tracking-widest hover:text-white transition-colors">
-            Back to Top ↑
-          </button>
-        </div>
+        <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.22)", letterSpacing: "0.04em" }}>
+          Utopia of Talent Sourcing
+        </span>
       </div>
+
+      <style>{`
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr 1.4fr;
+          gap: 40px;
+        }
+        @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr !important; } }
+        @media (max-width: 540px) { .footer-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
     </footer>
+  );
+}
+
+function FooterLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link href={href} style={{ display: "block", fontSize: "0.78rem", color: "rgba(255,255,255,0.42)", textDecoration: "none", marginBottom: 8, transition: "color 0.25s ease" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--red)"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.42)"; }}>
+      {label}
+    </Link>
   );
 }

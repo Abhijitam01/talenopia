@@ -3,9 +3,6 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -20,140 +17,166 @@ export function Header() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 12);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   return (
     <>
-      <nav
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 h-[var(--nav-h)] flex items-center justify-between px-[5%] transition-all duration-300 border-b border-black/5",
-          isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-sm"
-            : "bg-white/90 backdrop-blur-sm"
-        )}
-      >
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 flex-shrink-0">
-            <svg viewBox="0 0 100 100" fill="none" className="w-full h-full">
-              <polygon
-                points="50,6 90,90 10,90"
-                stroke="#0a0a0a"
-                strokeWidth="8"
-                fill="none"
-                strokeLinejoin="round"
-              />
-              <line
-                x1="28"
-                y1="65"
-                x2="72"
-                y2="65"
-                stroke="#0a0a0a"
-                strokeWidth="8"
-                strokeLinecap="square"
-              />
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+        height: "var(--nav-h)",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "0 5%",
+        background: "rgba(255,255,255,0.98)",
+        backdropFilter: "blur(8px)",
+        borderBottom: "1px solid var(--gray-mid)",
+        boxShadow: isScrolled ? "0 1px 12px rgba(0,0,0,0.07)" : "none",
+        transition: "box-shadow 0.3s ease",
+      }}>
+
+        {/* Logo */}
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+          <div style={{ width: 36, height: 36 }}>
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" width={36} height={36}>
+              <polygon points="50,8 85,88 15,88" fill="none" stroke="#C01C1C" strokeWidth="9" strokeLinejoin="round" />
+              <line x1="30" y1="63" x2="70" y2="63" stroke="#C01C1C" strokeWidth="9" strokeLinecap="square" />
             </svg>
           </div>
-          <div className="flex flex-col leading-none">
-            <span className="font-display text-[1.4rem] tracking-[0.06em] text-black">
-              TALENOPIA
-            </span>
-            <small className="text-[0.38rem] font-bold tracking-[0.28em] text-[#c8102e] uppercase mt-[2px]">
-              Utopia of Talent Sourcing
-            </small>
+          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1, gap: 3 }}>
+            <span style={{ fontSize: "1.1rem", fontWeight: 800, letterSpacing: "0.06em", color: "var(--text)" }}>TALENOPIA</span>
+            <span style={{ fontSize: "0.38rem", fontWeight: 600, letterSpacing: "0.24em", color: "var(--red)", textTransform: "uppercase" }}>Utopia of Talent Sourcing</span>
           </div>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex items-center gap-8 list-none">
-            {NAV_LINKS.map((link) => (
+        {/* Desktop nav */}
+        <ul style={{ display: "flex", alignItems: "center", gap: 32, listStyle: "none", margin: 0, padding: 0 }}
+          className="desktop-nav">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href;
+            return (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={cn(
-                    "text-[0.76rem] font-bold tracking-[0.08em] uppercase text-[#1a1917] relative pb-1 transition-colors duration-200 hover:text-[#c8102e]",
-                    pathname === link.href && "text-[#c8102e]"
-                  )}
+                  style={{
+                    fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.1em",
+                    textTransform: "uppercase", textDecoration: "none",
+                    color: isActive ? "var(--red)" : "var(--text)",
+                    transition: "color var(--transition)",
+                  }}
+                  className={`nav-link-underline${isActive ? " active" : ""}`}
                 >
                   {link.label}
-                  <span
-                    className={cn(
-                      "absolute bottom-0 left-0 h-[1.5px] bg-[#c8102e] transition-all duration-300 ease-in-out",
-                      pathname === link.href ? "width-full" : "w-0 hover:w-full"
-                    )}
-                    style={{
-                      width: pathname === link.href ? "100%" : undefined,
-                    }}
-                  />
-                  {/* Hover effect purely via CSS group-hover or just hover psuedo */}
-                  <style jsx>{`
-                    a:hover span {
-                      width: 100%;
-                    }
-                  `}</style>
                 </Link>
               </li>
-            ))}
-          </ul>
-          <Link
-            href="/contact"
-            className="bg-black text-white px-5 py-2.5 text-[0.76rem] font-bold tracking-[0.1em] uppercase hover:bg-[#c8102e] transition-colors duration-200"
-          >
-            Contact Us
-          </Link>
-        </div>
-
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden flex flex-col gap-[5px] p-1"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? (
-            <X className="w-6 h-6 text-black" />
-          ) : (
-            <div className="flex flex-col gap-1.5">
-              <span className="block w-[22px] h-[1.5px] bg-black" />
-              <span className="block w-[22px] h-[1.5px] bg-black" />
-              <span className="block w-[22px] h-[1.5px] bg-black" />
-            </div>
-          )}
-        </button>
-      </nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed top-[var(--nav-h)] left-0 right-0 bg-white border-t border-gray-100 shadow-xl p-6 flex flex-col gap-4 md:hidden z-40"
-          >
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm font-bold uppercase tracking-widest text-black hover:text-[#c8102e]"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            );
+          })}
+          <li>
             <Link
               href="/contact"
-              className="bg-[#c8102e] text-white text-center py-3 text-sm font-bold uppercase tracking-widest mt-2"
-              onClick={() => setIsMobileMenuOpen(false)}
+              style={{
+                fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.1em",
+                textTransform: "uppercase", textDecoration: "none",
+                background: "var(--red)", color: "var(--white)",
+                padding: "9px 20px",
+                display: "inline-block",
+                transition: "background var(--transition)",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--red-dark)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--red)"; }}
             >
               Contact Us
             </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </li>
+        </ul>
+
+        {/* Hamburger / X toggle */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="hamburger-btn"
+          aria-label="Toggle menu"
+          style={{
+            display: "none", flexDirection: "column", gap: 5, cursor: "pointer",
+            background: "none", border: "none", padding: 4,
+            width: 28, height: 28, position: "relative",
+          }}
+        >
+          <span style={{
+            display: "block", width: 22, height: 2, background: "var(--text)",
+            position: "absolute", left: 3, top: isMobileMenuOpen ? 13 : 7,
+            transition: "all 0.3s ease",
+            transform: isMobileMenuOpen ? "rotate(45deg)" : "none",
+          }} />
+          <span style={{
+            display: "block", width: 22, height: 2, background: "var(--text)",
+            position: "absolute", left: 3, top: 13,
+            opacity: isMobileMenuOpen ? 0 : 1,
+            transition: "opacity 0.2s ease",
+          }} />
+          <span style={{
+            display: "block", width: 22, height: 2, background: "var(--text)",
+            position: "absolute", left: 3, top: isMobileMenuOpen ? 13 : 19,
+            transition: "all 0.3s ease",
+            transform: isMobileMenuOpen ? "rotate(-45deg)" : "none",
+          }} />
+        </button>
+      </nav>
+
+      {/* Mobile menu with slide animation */}
+      <div style={{
+        position: "fixed", top: "var(--nav-h)", left: 0, right: 0,
+        background: "var(--white)", display: "flex", flexDirection: "column",
+        padding: "20px 5%", gap: 18, boxShadow: "0 4px 20px rgba(0,0,0,0.1)", zIndex: 999,
+        borderTop: "1px solid var(--gray-mid)",
+        transform: isMobileMenuOpen ? "translateY(0)" : "translateY(-120%)",
+        opacity: isMobileMenuOpen ? 1 : 0,
+        transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease",
+        pointerEvents: isMobileMenuOpen ? "auto" : "none",
+      }}>
+        {NAV_LINKS.map((link) => (
+          <Link key={link.href} href={link.href}
+            style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", color: pathname === link.href ? "var(--red)" : "var(--text)" }}
+            onClick={() => setIsMobileMenuOpen(false)}>
+            {link.label}
+          </Link>
+        ))}
+        <Link href="/contact"
+          style={{ background: "var(--red)", color: "var(--white)", padding: "11px 20px", textAlign: "center", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none" }}
+          onClick={() => setIsMobileMenuOpen(false)}>
+          Contact Us
+        </Link>
+      </div>
+
+      {/* Responsive grid helpers */}
+      <style>{`
+        @media (max-width: 640px) {
+          .desktop-nav { display: none !important; }
+          .hamburger-btn { display: flex !important; }
+        }
+        .intro-inner {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 72px;
+          align-items: center;
+        }
+        .why-inner {
+          display: grid;
+          grid-template-columns: 5fr 7fr;
+          gap: 72px;
+          align-items: start;
+        }
+        @media (max-width: 900px) {
+          .intro-inner { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .why-inner   { grid-template-columns: 1fr !important; gap: 40px !important; }
+        }
+      `}
+      </style>
     </>
   );
 }
