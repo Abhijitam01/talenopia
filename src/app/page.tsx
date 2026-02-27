@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 
 export default function Home() {
@@ -21,117 +21,176 @@ export default function Home() {
       {/* ════════════════════════════════════════
           HERO
       ════════════════════════════════════════ */}
-      <section className="relative min-h-[100vh] grid lg:grid-cols-[1.3fr_1fr] pt-[64px] overflow-hidden hero-section bg-[#F4F2EE]">
+      <section className="hero-section">
         <style dangerouslySetInnerHTML={{__html: `
-          .hero-section::before {
-            content: '';
-            position: absolute; top: 0; left: 0;
-            width: 65%; height: 100%;
-            background: #C01C1C;
-            clip-path: polygon(0 0, 100% 0, 75% 100%, 0 100%);
-            z-index: 0;
+          .hero-section {
+            position: relative;
+            min-height: calc(100vh - var(--nav-h));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            background: #111113;
+            padding: 5rem 4rem 3rem;
           }
-          .hero-section::after {
-            content: '';
-            position: absolute; top: 120px; right: 60px;
-            width: 220px; height: 160px;
-            background-image: radial-gradient(circle, #C01C1C 1.5px, transparent 1.5px);
-            background-size: 18px 18px;
-            opacity: 0.25;
-            z-index: 1;
+          /* left content */
+          .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
           }
-          @media (max-width: 1024px) {
-            .hero-section::before {
-               width: 100%; clip-path: polygon(0 0,100% 0,100% 45%,0 55%);
-            }
+          .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
           }
-          .hero-card {
-            animation: slideUp .8s cubic-bezier(.16,1,.3,1) both;
+          .hero-eyebrow-line {
+            width: 28px; height: 2px;
+            background: #C41E1E;
+            flex-shrink: 0;
           }
-          .hero-heading {
-            animation: slideUp .8s .1s cubic-bezier(.16,1,.3,1) both;
+          .hero-eyebrow span {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C41E1E;
           }
-          .hero-body {
-            animation: slideUp .8s .2s cubic-bezier(.16,1,.3,1) both;
+          .hero-h1 {
+            font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+            font-weight: 900;
+            font-size: clamp(3.2rem, 6.5vw, 5.8rem);
+            line-height: 0.95;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
           }
-          .hero-actions {
-            animation: slideUp .8s .3s cubic-bezier(.16,1,.3,1) both;
+          .hero-h1 .line-white { color: #fff; display: block; }
+          .hero-h1 .line-red   { color: #C41E1E; display: block; }
+          .hero-divider {
+            width: 40px; height: 3px;
+            background: #C41E1E;
+            margin: 1.75rem 0;
           }
-          .stat-card {
-            animation: slideUp .8s cubic-bezier(.16,1,.3,1) both;
+          .hero-sub {
+            font-family: var(--font-barlow, 'Barlow', sans-serif);
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+            max-width: 50ch;
+            margin-bottom: 2.5rem;
           }
-          .stat-card:nth-child(1) { animation-delay: .15s; border-left-color: #C01C1C; }
-          .stat-card:nth-child(2) { animation-delay: .25s; border-left-color: #ddd; }
-          .stat-card:nth-child(3) { animation-delay: .35s; border-left-color: #ddd; }
-          .stat-card:nth-child(4) { animation-delay: .45s; }
-          @keyframes slideUp {
+          .hero-ctas { display: flex; gap: 1rem; }
+          .hero-btn-red {
+            background: #C41E1E; color: #fff; border: none;
+            padding: 0.85rem 1.75rem;
+            font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+            font-weight: 700; font-size: 0.9rem;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            cursor: pointer; transition: background 0.2s;
+            text-decoration: none; display: inline-block;
+          }
+          .hero-btn-red:hover { background: #a01818; }
+          .hero-btn-outline {
+            background: transparent; color: #fff;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 0.85rem 1.75rem;
+            font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+            font-weight: 700; font-size: 0.9rem;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            cursor: pointer; transition: all 0.2s;
+            text-decoration: none; display: inline-block;
+          }
+          .hero-btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
+          /* bottom stats row */
+          .hero-stats-row {
+            position: absolute;
+            bottom: 2.5rem; right: 4rem;
+            z-index: 2;
+            display: flex;
+            gap: 3rem;
+          }
+          .hero-stat {
+            text-align: center;
+            animation: heroSlideUp .8s cubic-bezier(.16,1,.3,1) both;
+          }
+          .hero-stat:nth-child(1) { animation-delay: .2s; }
+          .hero-stat:nth-child(2) { animation-delay: .3s; }
+          .hero-stat:nth-child(3) { animation-delay: .4s; }
+          .hero-stat-value {
+            font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+            font-weight: 800; font-size: 2rem;
+            color: #C41E1E; line-height: 1;
+            margin-bottom: 0.3rem;
+          }
+          .hero-stat-label {
+            font-size: 0.58rem; font-weight: 500;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+          }
+          /* animations */
+          .hero-content > * {
+            animation: heroSlideUp .8s cubic-bezier(.16,1,.3,1) both;
+          }
+          .hero-content > *:nth-child(1) { animation-delay: 0s; }
+          .hero-content > *:nth-child(2) { animation-delay: .1s; }
+          .hero-content > *:nth-child(3) { animation-delay: .18s; }
+          .hero-content > *:nth-child(4) { animation-delay: .25s; }
+          .hero-content > *:nth-child(5) { animation-delay: .33s; }
+          @keyframes heroSlideUp {
             from { opacity: 0; transform: translateY(40px); }
             to   { opacity: 1; transform: translateY(0); }
           }
-          @keyframes bounce {
-            0%,100%{ transform: translateX(-50%) translateY(0); }
-            50%    { transform: translateX(-50%) translateY(8px); }
+          /* responsive */
+          @media (max-width: 900px) {
+            .hero-section { padding: 3rem 1.5rem 5rem; }
+            .hero-stats-row { position: relative; bottom: auto; right: auto; margin-top: 3rem; justify-content: flex-start; gap: 2rem; }
+          }
+          @media (max-width: 480px) {
+            .hero-stats-row { flex-wrap: wrap; gap: 1.5rem; }
           }
         `}} />
 
-        {/* Left Main Card */}
-        <div className="relative z-[2] flex items-center px-[24px] lg:px-[64px] py-[100px] lg:py-[80px]">
-          <div className="w-full max-w-[650px] hero-card mx-auto lg:ml-0 lg:mr-auto pl-0 lg:pl-[40px]">
-            <div className="flex items-center gap-[12px] text-[11px] font-[600] tracking-[2px] uppercase text-white mb-[28px] before:content-[''] before:block before:w-[28px] before:h-[2px] before:bg-white">
-              Resource Augmentation Specialists
-            </div>
+        {/* CONTENT */}
+        <div className="hero-content">
+          <div className="hero-eyebrow">
+            <div className="hero-eyebrow-line" />
+            <span>Resource Augmentation Specialists</span>
+          </div>
 
-            <h1 className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[clamp(48px,5vw,72px)] leading-[1.0] tracking-[-1px] text-white hero-heading mb-0">
-              Enterprise-Ready<br/>Talent.<br/>
-              <span className="text-[#111]">Deployed When<br/>You Need It.</span>
-            </h1>
+          <h1 className="hero-h1">
+            <span className="line-white">Enterprise-Ready</span>
+            <span className="line-white">Talent.</span>
+            <span className="line-red">Deployed When You</span>
+            <span className="line-red">Need It.</span>
+          </h1>
 
-            <div className="w-[36px] h-[3px] bg-white my-[28px]" />
+          <div className="hero-divider" />
 
-            <p className="text-[16px] leading-[1.75] text-white/90 mb-[36px] hero-body font-[family-name:var(--font-barlow)]">
-              Talenopia helps enterprises and growing businesses scale with hyper-specialized IT and non-IT professionals — without long hiring cycles, hidden costs, or rigid contracts.
-            </p>
+          <p className="hero-sub">
+            Talenopia helps enterprises and growing businesses scale faster with hyper-specialized IT and non-IT professionals—without long hiring cycles, hidden costs, or rigid contracts.
+          </p>
 
-            <div className="flex gap-[16px] flex-wrap hero-actions">
-              <Link href="/contact" className="bg-[#111] text-white py-[14px] px-[32px] font-[family-name:var(--font-barlow-condensed)] font-[700] text-[14px] tracking-[2px] uppercase rounded-[2px] transition-all hover:bg-black hover:-translate-y-[2px]">
-                Hire Talent
-              </Link>
-              <Link href="/contact" className="bg-transparent text-white py-[14px] px-[32px] font-[family-name:var(--font-barlow-condensed)] font-[700] text-[14px] tracking-[2px] uppercase border-[2px] border-white rounded-[2px] transition-all hover:bg-white hover:text-[#C01C1C] hover:-translate-y-[2px]">
-                Talk to an Expert
-              </Link>
-            </div>
+          <div className="hero-ctas">
+            <Link href="/contact" className="hero-btn-red">Hire Talent</Link>
+            <Link href="/contact" className="hero-btn-outline">Talk to an Expert</Link>
           </div>
         </div>
 
-        {/* Right Stats Cards */}
-        <div className="relative z-[2] flex flex-row flex-wrap lg:flex-col justify-center gap-[12px] lg:gap-[16px] p-[24px] lg:py-[80px] lg:pr-[48px] lg:pl-[80px] max-w-[500px] mx-auto lg:mx-0 w-full">
-          <div className="bg-white py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
-            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-[#8a8a8a] mb-[8px]">Clients Served</div>
-            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[40px] text-[#C01C1C] leading-[1]">
-              <Counter target={500} suffix="+" />
-            </div>
+        {/* BOTTOM-RIGHT STATS */}
+        <div className="hero-stats-row">
+          <div className="hero-stat">
+            <div className="hero-stat-value">IT &amp; Non-IT</div>
+            <div className="hero-stat-label">Talent Coverage</div>
           </div>
-          
-          <div className="bg-white py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
-            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-[#8a8a8a] mb-[8px]">Talent Coverage</div>
-            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[28px] pt-[6px] text-[#C01C1C] leading-[1]">IT & Non-IT</div>
+          <div className="hero-stat">
+            <div className="hero-stat-value">4+</div>
+            <div className="hero-stat-label">Engagement Models</div>
           </div>
-
-          <div className="bg-white py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
-            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-[#8a8a8a] mb-[8px]">Engagement Models</div>
-            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[40px] text-[#C01C1C] leading-[1]">4+</div>
+          <div className="hero-stat">
+            <div className="hero-stat-value">0%</div>
+            <div className="hero-stat-label">Hidden Costs</div>
           </div>
-
-          <div className="bg-[#C01C1C] py-[28px] px-[36px] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border-l-[4px] border-transparent transition-all hover:translate-x-[6px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] stat-card flex-[1_1_140px] lg:flex-none">
-            <div className="text-[10px] font-[600] tracking-[2px] uppercase text-white/70 mb-[8px]">Hidden Costs</div>
-            <div className="font-[family-name:var(--font-barlow-condensed)] font-[900] text-[40px] text-white leading-[1]">0%</div>
-          </div>
-        </div>
-
-        {/* Scroll Hint */}
-        <div className="absolute bottom-[32px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-[8px] z-10 animate-[bounce_2s_infinite]">
-          <span className="text-[10px] tracking-[2px] uppercase text-[#8a8a8a]">Scroll</span>
-          <div className="w-[18px] h-[18px] border-r-[2px] border-b-[2px] border-[#C01C1C] rotate-45" />
         </div>
       </section>
 
@@ -212,13 +271,23 @@ export default function Home() {
           </h2>
         </div>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))",
-          gap: 1,
-          background: "var(--gray-mid)",
-          border: "1px solid var(--gray-mid)",
-        }}>
+        <style dangerouslySetInnerHTML={{__html: `
+          .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--gray-mid);
+            border: 1px solid var(--gray-mid);
+          }
+          @media (max-width: 900px) {
+            .spec-grid { grid-template-columns: repeat(2, 1fr); }
+          }
+          @media (max-width: 560px) {
+            .spec-grid { grid-template-columns: 1fr; }
+          }
+        `}} />
+
+        <div className="spec-grid">
           {[
             { title: "AI / ML Engineers", desc: "Machine learning specialists and AI engineers for enterprise-grade deployments and innovation pipelines." },
             { title: "Cloud Engineers", desc: "Certified professionals across AWS, Azure, and GCP to architect, migrate, and manage cloud environments." },
@@ -391,31 +460,3 @@ function WhyPoint({ title, text, idx }: { title: string; text: string; idx: numb
   );
 }
 
-function Counter({ target, suffix = "" }: { target: number, suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        let c = 0;
-        const step = target / 60;
-        const tick = () => {
-          c = Math.min(c + step, target);
-          setCount(Math.floor(c));
-          if (c < target) requestAnimationFrame(tick);
-        };
-        tick();
-        obs.unobserve(el);
-      });
-    });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target]);
-
-  return <span ref={ref}>{count}{suffix}</span>;
-}

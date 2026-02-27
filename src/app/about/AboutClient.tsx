@@ -191,7 +191,7 @@ export default function AboutClient() {
               Global
             </div>
             <div className="font-display text-[3.8rem] leading-none text-white mb-1">
-              World<span className="text-[1.3rem]">-class</span>
+              World-class
             </div>
             <div className="text-[0.66rem] tracking-[0.15em] uppercase text-white/60">
               Talent Standards

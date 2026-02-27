@@ -34,7 +34,7 @@ export default function ServicesClient() {
              variants={fadeInUp}
              className="font-display text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.93] text-[#0a0a0a] mb-6"
            >
-             Resource <span className="text-transparent" style={{ WebkitTextStroke: "1.5px #0a0a0a" }}>Augmentation</span><br />
+             Resource Augmentation<br />
              Services for Scale
            </motion.h1>
 
