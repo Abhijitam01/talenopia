@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { Code, Cloud, Database, Shield, Smartphone, LineChart } from "lucide-react";
 
 export default function Home() {
   useEffect(() => {
@@ -28,168 +29,197 @@ export default function Home() {
             min-height: calc(100vh - var(--nav-h));
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: center;
             overflow: hidden;
             background: #111113;
-            padding: 5rem 4rem 3rem;
+            background-image: 
+              linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            padding: 5rem 1rem 3rem;
+            text-align: center;
           }
-          /* left content */
           .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 680px;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
           }
-          .hero-eyebrow {
+          .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 99px;
+            padding: 6px 6px 6px 16px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+          }
+          .hero-pill-tag {
+            background: rgba(196, 30, 30, 0.2);
+            color: #C41E1E;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 99px;
+          }
+          .hero-pill-text {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding-right: 12px;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.75rem;
-          }
-          .hero-eyebrow-line {
-            width: 28px; height: 2px;
-            background: #C41E1E;
-            flex-shrink: 0;
-          }
-          .hero-eyebrow span {
-            font-size: 0.72rem;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #C41E1E;
+            gap: 8px;
           }
           .hero-h1 {
             font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
-            font-weight: 900;
-            font-size: clamp(3.2rem, 6.5vw, 5.8rem);
-            line-height: 0.95;
+            font-weight: 800;
+            font-size: clamp(3.2rem, 7vw, 6.5rem);
+            line-height: 1.05;
             letter-spacing: -0.01em;
-            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            color: #fff;
           }
-          .hero-h1 .line-white { color: #fff; display: block; }
-          .hero-h1 .line-red   { color: #C41E1E; display: block; }
-          .hero-divider {
-            width: 40px; height: 3px;
-            background: #C41E1E;
-            margin: 1.75rem 0;
+          .hero-h1 .text-red {
+            color: #C41E1E;
           }
           .hero-sub {
             font-family: var(--font-barlow, 'Barlow', sans-serif);
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             color: rgba(255,255,255,0.65);
             line-height: 1.7;
-            max-width: 50ch;
-            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-bottom: 3rem;
           }
-          .hero-ctas { display: flex; gap: 1rem; }
+          .hero-ctas {
+            display: flex; gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+          }
           .hero-btn-red {
             background: #C41E1E; color: #fff; border: none;
-            padding: 0.85rem 1.75rem;
+            padding: 0.9rem 2.2rem; border-radius: 99px;
             font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
-            font-weight: 700; font-size: 0.9rem;
-            letter-spacing: 0.12em; text-transform: uppercase;
+            font-weight: 700; font-size: 1rem;
+            letter-spacing: 0.05em; text-transform: uppercase;
             cursor: pointer; transition: background 0.2s;
-            text-decoration: none; display: inline-block;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
           }
           .hero-btn-red:hover { background: #a01818; }
           .hero-btn-outline {
-            background: transparent; color: #fff;
-            border: 2px solid rgba(255,255,255,0.3);
-            padding: 0.85rem 1.75rem;
+            background: #fff; color: #111;
+            border: none;
+            padding: 0.9rem 2.2rem; border-radius: 99px;
             font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
-            font-weight: 700; font-size: 0.9rem;
-            letter-spacing: 0.12em; text-transform: uppercase;
+            font-weight: 700; font-size: 1rem;
+            letter-spacing: 0.05em; text-transform: uppercase;
             cursor: pointer; transition: all 0.2s;
-            text-decoration: none; display: inline-block;
+            text-decoration: none; display: inline-flex; align-items: center;
           }
-          .hero-btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.5); }
-          /* bottom stats row */
-          .hero-stats-row {
+          .hero-btn-outline:hover { background: #e5e5e5; }
+          
+          /* Floating Icons */
+          .floating-icons {
             position: absolute;
-            bottom: 2.5rem; right: 4rem;
-            z-index: 2;
-            display: flex;
-            gap: 3rem;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
           }
-          .hero-stat {
-            text-align: center;
-            animation: heroSlideUp .8s cubic-bezier(.16,1,.3,1) both;
+          .float-icon {
+            position: absolute;
+            width: 70px; height: 70px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px);
+            animation: float 6s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
           }
-          .hero-stat:nth-child(1) { animation-delay: .2s; }
-          .hero-stat:nth-child(2) { animation-delay: .3s; }
-          .hero-stat:nth-child(3) { animation-delay: .4s; }
-          .hero-stat-value {
-            font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
-            font-weight: 800; font-size: 2rem;
-            color: #C41E1E; line-height: 1;
-            margin-bottom: 0.3rem;
+          .float-icon svg { width: 32px; height: 32px; color: #C41E1E; opacity: 0.9; }
+          .float-1 { top: 15%; left: 15%; animation-delay: 0s; }
+          .float-2 { top: 20%; right: 15%; animation-delay: 1s; }
+          .float-3 { top: 55%; left: 8%; animation-delay: 2s; }
+          .float-4 { top: 60%; right: 10%; animation-delay: 3s; }
+          .float-5 { bottom: 12%; left: 25%; animation-delay: 4s; }
+          .float-6 { bottom: 16%; right: 28%; animation-delay: 5s; }
+
+          @media (max-width: 1200px) {
+            .float-1 { left: 8%; }
+            .float-2 { right: 8%; }
+            .float-3 { left: 4%; }
+            .float-4 { right: 5%; }
+            .float-5 { left: 18%; }
+            .float-6 { right: 20%; }
           }
-          .hero-stat-label {
-            font-size: 0.58rem; font-weight: 500;
-            letter-spacing: 0.15em; text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
+          @media (max-width: 900px) {
+            .hero-h1 { font-size: clamp(2.8rem, 6vw, 4rem); }
+            .float-icon { width: 50px; height: 50px; border-radius: 14px; }
+            .float-icon svg { width: 24px; height: 24px; }
+            .float-5, .float-6 { display: none; }
           }
+          @media (max-width: 640px) {
+            .floating-icons { display: none; }
+            .hero-ctas { flex-direction: column; width: 100%; }
+            .hero-btn-red, .hero-btn-outline { width: 100%; justify-content: center; }
+          }
+
           /* animations */
           .hero-content > * {
-            animation: heroSlideUp .8s cubic-bezier(.16,1,.3,1) both;
+            animation: heroFadeUp 1s cubic-bezier(.16,1,.3,1) both;
           }
           .hero-content > *:nth-child(1) { animation-delay: 0s; }
           .hero-content > *:nth-child(2) { animation-delay: .1s; }
-          .hero-content > *:nth-child(3) { animation-delay: .18s; }
-          .hero-content > *:nth-child(4) { animation-delay: .25s; }
-          .hero-content > *:nth-child(5) { animation-delay: .33s; }
-          @keyframes heroSlideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to   { opacity: 1; transform: translateY(0); }
+          .hero-content > *:nth-child(3) { animation-delay: .2s; }
+          .hero-content > *:nth-child(4) { animation-delay: .3s; }
+          
+          @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
           }
-          /* responsive */
-          @media (max-width: 900px) {
-            .hero-section { padding: 3rem 1.5rem 5rem; }
-            .hero-stats-row { position: relative; bottom: auto; right: auto; margin-top: 3rem; justify-content: flex-start; gap: 2rem; }
-          }
-          @media (max-width: 480px) {
-            .hero-stats-row { flex-wrap: wrap; gap: 1.5rem; }
+          @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
           }
         `}} />
 
+        {/* Floating Icons Background */}
+        <div className="floating-icons">
+          <div className="float-icon float-1"><Code /></div>
+          <div className="float-icon float-2"><Cloud /></div>
+          <div className="float-icon float-3"><Database /></div>
+          <div className="float-icon float-4"><Shield /></div>
+          <div className="float-icon float-5"><Smartphone /></div>
+          <div className="float-icon float-6"><LineChart /></div>
+        </div>
+
         {/* CONTENT */}
         <div className="hero-content">
-          <div className="hero-eyebrow">
-            <div className="hero-eyebrow-line" />
-            <span>Resource Augmentation Specialists</span>
+          <div className="hero-pill">
+            <span className="hero-pill-tag">Specialists</span>
+            <span className="hero-pill-text">Resource Augmentation <span style={{ opacity: 0.5 }}>&rarr;</span></span>
           </div>
 
           <h1 className="hero-h1">
-            <span className="line-white">Enterprise-Ready</span>
-            <span className="line-white">Talent.</span>
-            <span className="line-red">Deployed When You</span>
-            <span className="line-red">Need It.</span>
+            Enterprise-Ready <span className="text-red">Talent</span>.<br />
+            Deployed When You <span className="text-red">Need It</span>.
           </h1>
-
-          <div className="hero-divider" />
 
           <p className="hero-sub">
             Talenopia helps enterprises and growing businesses scale faster with hyper-specialized IT and non-IT professionals—without long hiring cycles, hidden costs, or rigid contracts.
           </p>
 
           <div className="hero-ctas">
-            <Link href="/contact" className="hero-btn-red">Hire Talent</Link>
-            <Link href="/contact" className="hero-btn-outline">Talk to an Expert</Link>
-          </div>
-        </div>
-
-        {/* BOTTOM-RIGHT STATS */}
-        <div className="hero-stats-row">
-          <div className="hero-stat">
-            <div className="hero-stat-value">IT &amp; Non-IT</div>
-            <div className="hero-stat-label">Talent Coverage</div>
-          </div>
-          <div className="hero-stat">
-            <div className="hero-stat-value">4+</div>
-            <div className="hero-stat-label">Engagement Models</div>
-          </div>
-          <div className="hero-stat">
-            <div className="hero-stat-value">0%</div>
-            <div className="hero-stat-label">Hidden Costs</div>
+            <Link href="/contact" className="hero-btn-red">Hire Talent &rarr;</Link>
+            <Link href="/services" className="hero-btn-outline">Talk to an Expert</Link>
           </div>
         </div>
       </section>

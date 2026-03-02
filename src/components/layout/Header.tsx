@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { TalenopiaLogo } from "@/components/ui/TalenopiaLogo";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -42,18 +43,7 @@ export function Header() {
       }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <div style={{ width: 36, height: 36 }}>
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" width={36} height={36}>
-              <polygon points="50,8 85,88 15,88" fill="none" stroke="#C01C1C" strokeWidth="9" strokeLinejoin="round" />
-              <line x1="30" y1="63" x2="70" y2="63" stroke="#C01C1C" strokeWidth="9" strokeLinecap="square" />
-            </svg>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1, gap: 3 }}>
-            <span style={{ fontSize: "1.1rem", fontWeight: 800, letterSpacing: "0.06em", color: "var(--text)" }}>TALENOPIA</span>
-            <span style={{ fontSize: "0.38rem", fontWeight: 600, letterSpacing: "0.24em", color: "var(--red)", textTransform: "uppercase" }}>Utopia of Talent Sourcing</span>
-          </div>
-        </Link>
+        <TalenopiaLogo iconSize={38} variant="dark" />
 
         {/* Desktop nav */}
         <ul style={{ display: "flex", alignItems: "center", gap: 32, listStyle: "none", margin: 0, padding: 0 }}

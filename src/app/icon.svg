@@ -1,4 +1,8 @@
-<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="50,8 85,88 15,88" fill="none" stroke="#C01C1C" stroke-width="9" stroke-linejoin="round"/>
-  <line x1="30" y1="63" x2="70" y2="63" stroke="#C01C1C" stroke-width="9" stroke-linecap="square"/>
+<svg viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="110" rx="16" fill="#111113"/>
+  <path
+    d="M50 5 L96 106 H79 L50 42 L21 106 H4 L50 5Z M19 74 L34 74 L41 89 L26 89Z M81 74 L66 74 L59 89 L74 89Z"
+    fill="white"
+    fill-rule="evenodd"
+  />
 </svg>

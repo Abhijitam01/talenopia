@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { TalenopiaLogo } from "@/components/ui/TalenopiaLogo";
 
 export function Footer() {
   return (
@@ -10,16 +11,8 @@ export function Footer() {
 
         {/* Brand */}
         <div>
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", marginBottom: 18 }}>
-            <svg viewBox="0 0 100 100" fill="none" width={30} height={30}>
-              <polygon points="50,8 85,88 15,88" fill="none" stroke="#C01C1C" strokeWidth="9" strokeLinejoin="round" />
-              <line x1="30" y1="63" x2="70" y2="63" stroke="#C01C1C" strokeWidth="9" strokeLinecap="square" />
-            </svg>
-            <div style={{ display: "flex", flexDirection: "column", gap: 3, lineHeight: 1 }}>
-              <span style={{ fontSize: "1rem", fontWeight: 800, letterSpacing: "0.06em", color: "var(--white)" }}>TALENOPIA</span>
-              <span style={{ fontSize: "0.36rem", fontWeight: 600, letterSpacing: "0.22em", color: "var(--red)", textTransform: "uppercase" }}>Utopia of Talent Sourcing</span>
-            </div>
-          </Link>
+          <TalenopiaLogo iconSize={32} variant="light" gap={10} />
+          <span style={{ display: "block", marginTop: 8 }} />
           <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.38)", lineHeight: 1.7, maxWidth: 240 }}>
             A resource augmentation firm built for organizations that value agility, precision, and trust.
           </p>
