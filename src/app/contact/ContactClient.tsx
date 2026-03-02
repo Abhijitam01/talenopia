@@ -57,8 +57,8 @@ export default function ContactClient() {
 
         <div className="contact-grid" style={{
           background: "var(--white)",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.08)",
-          borderRadius: "4px",
+          boxShadow: "0 24px 48px rgba(0,0,0,0.06)",
+          borderRadius: "24px",
           padding: "50px",
           marginTop: "-20px"
         }}>
@@ -92,15 +92,16 @@ export default function ContactClient() {
                   onClick={() => toggleTag(tag)}
                   style={{
                     fontSize: "0.7rem",
-                    padding: "5px 12px",
+                    padding: "6px 16px",
                     border: "1px solid var(--gray-mid)",
                     cursor: "pointer",
                     fontWeight: 600,
                     letterSpacing: "0.05em",
+                    borderRadius: "99px",
                     background: selectedTags.includes(tag) ? "var(--black)" : "var(--white)",
                     color: selectedTags.includes(tag) ? "var(--white)" : "var(--text)",
                     borderColor: selectedTags.includes(tag) ? "var(--black)" : "var(--gray-mid)",
-                    transition: "var(--transition)",
+                    transition: "all var(--transition)",
                   }}
                 >
                   {tag}
@@ -126,9 +127,9 @@ export default function ContactClient() {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <label style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--black)" }}>Requirement Type</label>
-              <select style={{ padding: "14px 16px", border: "1.5px solid var(--gray-mid)", fontFamily: "inherit", fontSize: "0.88rem", outline: "none", background: "var(--white)", color: "var(--text)", transition: "border-color var(--transition)" }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = "var(--black)"; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "var(--gray-mid)"; }}>
+              <select style={{ padding: "14px 16px", border: "1.5px solid var(--gray-mid)", borderRadius: "12px", fontFamily: "inherit", fontSize: "0.88rem", outline: "none", background: "var(--white)", color: "var(--text)", transition: "all var(--transition)" }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "var(--black)"; e.currentTarget.style.boxShadow = "0 0 0 4px rgba(0,0,0,0.03)"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "var(--gray-mid)"; e.currentTarget.style.boxShadow = "none"; }}>
                 <option value="">Select a category</option>
                 <option>IT Staff Augmentation</option>
                 <option>Non-IT Staff Augmentation</option>
@@ -141,12 +142,12 @@ export default function ContactClient() {
               <textarea
                 placeholder="Tell us about your requirements, team size, timeline..."
                 required
-                style={{ padding: "14px 16px", border: "1.5px solid var(--gray-mid)", fontFamily: "inherit", fontSize: "0.88rem", outline: "none", background: "var(--white)", resize: "vertical", minHeight: 120, color: "var(--text)", transition: "border-color var(--transition)" }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = "var(--black)"; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "var(--gray-mid)"; }}
+                style={{ padding: "14px 16px", border: "1.5px solid var(--gray-mid)", borderRadius: "12px", fontFamily: "inherit", fontSize: "0.88rem", outline: "none", background: "var(--white)", resize: "vertical", minHeight: 120, color: "var(--text)", transition: "all var(--transition)" }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "var(--black)"; e.currentTarget.style.boxShadow = "0 0 0 4px rgba(0,0,0,0.03)"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "var(--gray-mid)"; e.currentTarget.style.boxShadow = "none"; }}
               />
             </div>
-            <button type="submit" className="btn btn-dark" style={{ alignSelf: "flex-start", padding: "16px 36px" }}>
+            <button type="submit" className="btn btn-dark" style={{ alignSelf: "flex-start", padding: "16px 40px", borderRadius: "12px" }}>
               Submit Request →
             </button>
             {submitted && (
@@ -190,9 +191,9 @@ function FormField({ label, type, placeholder, required }: { label: string; type
         type={type}
         placeholder={placeholder}
         required={required}
-        style={{ padding: "14px 16px", border: "1.5px solid var(--gray-mid)", fontFamily: "inherit", fontSize: "0.88rem", outline: "none", background: "var(--white)", color: "var(--text)", transition: "border-color var(--transition)" }}
-        onFocus={(e) => { e.currentTarget.style.borderColor = "var(--black)"; }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = "var(--gray-mid)"; }}
+        style={{ padding: "14px 16px", border: "1.5px solid var(--gray-mid)", borderRadius: "12px", fontFamily: "inherit", fontSize: "0.88rem", outline: "none", background: "var(--white)", color: "var(--text)", transition: "all var(--transition)" }}
+        onFocus={(e) => { e.currentTarget.style.borderColor = "var(--black)"; e.currentTarget.style.boxShadow = "0 0 0 4px rgba(0,0,0,0.03)"; }}
+        onBlur={(e) => { e.currentTarget.style.borderColor = "var(--gray-mid)"; e.currentTarget.style.boxShadow = "none"; }}
       />
     </div>
   );
