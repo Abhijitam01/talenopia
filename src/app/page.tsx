@@ -334,7 +334,25 @@ export default function Home() {
       {/* ════════════════════════════════════════
           PROCESS  (dark background with layered tone)
       ════════════════════════════════════════ */}
-      <section className="reveal" style={{ padding: "88px 5%", background: "var(--black-mid)" }}>
+      <section className="reveal process-section" style={{ padding: "88px 5%", background: "var(--black-mid)" }}>
+        <style dangerouslySetInnerHTML={{__html: `
+          .process-section { padding: 88px 5%; }
+          .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-left: 1px solid var(--black-soft);
+          }
+          @media (max-width: 900px) {
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+          }
+          @media (max-width: 540px) {
+            .process-section { padding: 60px 5%; }
+            .process-grid {
+              grid-template-columns: 1fr;
+              border-left: none;
+            }
+          }
+        `}} />
         <span className="section-rule" style={{ display: "block" }} />
         <div style={{ fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--red)", marginBottom: 14 }}>
           How It Works
@@ -343,11 +361,7 @@ export default function Home() {
           A Simple, Enterprise-Friendly Process
         </h2>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          borderLeft: "1px solid var(--black-soft)",
-        }}>
+        <div className="process-grid">
           {[
             { num: "01", title: "Requirement Alignment", desc: "We understand your goals, timelines, and skill expectations before anything else." },
             { num: "02", title: "Talent Shortlisting", desc: "Receive curated profiles from our pre-vetted talent pool — no generic resumes." },
@@ -396,7 +410,27 @@ export default function Home() {
       {/* ════════════════════════════════════════
           CTA STRIP  (pre-footer red background)
       ════════════════════════════════════════ */}
-      <div className="reveal" style={{ background: "var(--red)", padding: "100px 5%" }}>
+      <div className="reveal cta-strip" style={{ background: "var(--red)", padding: "100px 5%" }}>
+        <style dangerouslySetInnerHTML={{__html: `
+          .cta-strip-btns {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+          }
+          @media (max-width: 540px) {
+            .cta-strip { padding: 72px 5%; }
+            .cta-strip-btns {
+              flex-direction: column;
+              width: 100%;
+            }
+            .cta-strip-btns a {
+              width: 100%;
+              text-align: center;
+              justify-content: center;
+            }
+          }
+        `}} />
         <div style={{ maxWidth: 640 }}>
           <span className="section-rule" style={{ background: "var(--white)" }} />
           <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)", fontWeight: 800, color: "var(--white)", marginBottom: 16, lineHeight: 1.2 }}>
@@ -406,7 +440,7 @@ export default function Home() {
             Whether you&apos;re expanding rapidly or filling critical skill gaps, Talenopia
             delivers the talent you need — without friction.
           </p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
+          <div className="cta-strip-btns">
             <Link href="/contact" className="btn btn-dark">Get in Touch</Link>
             <Link href="/services" className="btn btn-outline" style={{ background: "transparent", borderColor: "rgba(255,255,255,0.4)" }}>View Services</Link>
           </div>
