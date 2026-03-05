@@ -15,48 +15,21 @@ interface TalenopiaLogoProps {
   iconOnly?: boolean;
 }
 
-/**
- * The Talenopia logo mark, exactly matching the brand logo:
- * An angular bold "A" / "T" shape with rectangular notches cut from each leg.
- *
- * Uses SVG evenodd fill-rule so the notch cutouts are transparent
- * and show the background — works on any background color.
- */
-function LogoMark({ size, color }: { size: number; color: string }) {
-  /*
-   * The shape is built as a single compound path:
-   *  1. Outer A shape (clockwise)
-   *  2. Left notch cutout (counter-clockwise) — creates transparent hole
-   *  3. Right notch cutout (counter-clockwise) — creates transparent hole
-   *
-   * With fill-rule="evenodd", the cutouts punch through the filled A.
-   *
-   * Coordinates (viewBox 0 0 100 110):
-   *   - Peak at (50, 5)
-   *   - Base spans from (4, 106) to (96, 106)
-   *   - Leg thickness ~17 units
-   *   - Cutout slots at ~68–84% height through each leg
-   */
-  const d = [
-    // Outer A — clockwise
-    "M50 5 L96 106 H79 L50 42 L21 106 H4 L50 5Z",
-    // Left leg notch — counter-clockwise (creates hole)
-    "M19 74 L34 74 L41 89 L26 89Z",
-    // Right leg notch — counter-clockwise
-    "M81 74 L66 74 L59 89 L74 89Z",
-  ].join(" ");
+import Image from "next/image";
 
+function LogoMark({ size, color }: { size: number; color: string }) {
+  // Use the provided logo image instead of the SVG graphic 
   return (
-    <svg
-      viewBox="0 0 100 110"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      aria-hidden="true"
-    >
-      <path d={d} fill={color} fillRule="evenodd" />
-    </svg>
+    <Image 
+      src="/logo.jpg" 
+      alt="Talenopia Logo" 
+      width={size} 
+      height={size} 
+      style={{
+        borderRadius: size * 0.15, // Add a little rounding
+        objectFit: "contain"
+      }}
+    />
   );
 }
 
