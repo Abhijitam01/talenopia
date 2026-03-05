@@ -149,16 +149,16 @@ export default function Home() {
           .float-2 { top: 20%; right: 15%; animation-delay: 1s; }
           .float-3 { top: 55%; left: 8%; animation-delay: 2s; }
           .float-4 { top: 60%; right: 10%; animation-delay: 3s; }
-          .float-5 { bottom: 12%; left: 25%; animation-delay: 4s; }
-          .float-6 { bottom: 16%; right: 28%; animation-delay: 5s; }
+          .float-5 { bottom: 12%; left: 12%; animation-delay: 4s; }
+          .float-6 { bottom: 16%; right: 12%; animation-delay: 5s; }
 
           @media (max-width: 1200px) {
             .float-1 { left: 8%; }
             .float-2 { right: 8%; }
             .float-3 { left: 4%; }
             .float-4 { right: 5%; }
-            .float-5 { left: 18%; }
-            .float-6 { right: 20%; }
+            .float-5 { left: 6%; }
+            .float-6 { right: 6%; }
           }
           @media (max-width: 900px) {
             .hero-h1 { font-size: clamp(2.8rem, 6vw, 4rem); }
